@@ -1,0 +1,1 @@
+pip install Flask SQLAlchemy marshmallow flask-marshmallow Flask-SQLAlchemy Flask-Caching mysql-connector-python marshmallow-sqlalchemy circuitbreaker Flask-Limiter flask-cors pyjwt python-dotenv Faker pytest pytest-mock requests flask-swagger flask-swagger-ui psycopg2 psycopg2-binary gunicorn cryptography
