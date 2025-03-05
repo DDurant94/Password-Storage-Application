@@ -1,19 +1,16 @@
-import jwt
-import os
-from cryptography.fernet import Fernet
-from datetime import datetime, timedelta,timezone
+from database import db
+
+from flask import request,jsonify
 from dotenv import load_dotenv
 from functools import wraps
-from flask import request,jsonify
-
+from datetime import datetime, timedelta,timezone
+import jwt
 import base64
 import os
-from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
-from werkzeug.security import check_password_hash
-import datetime
-from datetime import datetime, timedelta,timezone
 
-from database import db
+from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
+from cryptography.fernet import Fernet
+
 from models.user import User
 
 ##
@@ -71,6 +68,7 @@ def role_required(role):
     @wraps(f)
     def decorated_function(*args, **kwargs):
       token = request.headers.get('Authorization', '').split(" ")[1]
+      
       if not token:
         return jsonify({'message': 'Token is missing'}), 401
       

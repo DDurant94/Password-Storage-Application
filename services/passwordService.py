@@ -35,8 +35,8 @@ def save(user_id,password_data):
     with session.begin():
       user = find_user(user_id)
       if password_data['folder_id'] is not None:
-        folder = session.query(Folder).filter(Folder.folder_id == password_data['folder_id'],
-                                              Folder.user_id == user[0].user_id).one_or_none()
+        folder = session.execute(db.select(Folder).where(Folder.folder_id == password_data['folder_id'],
+                                              Folder.user_id == user[0].user_id)).unique().scalar_one_or_none()
         
         if folder is None:
           raise ValueError('Folder not found!')
@@ -93,7 +93,8 @@ def update(user_id,password_data):
     with Session(db.engine) as session:
       with session.begin():        
         user = find_user(user_id)
-        password = session.execute(db.select(Password).where(Password.password_id == password_data['password_id'], Password.user_id == user[0].user_id)).scalar_one_or_none()
+        password = session.execute(db.select(Password).where(Password.password_id == password_data['password_id'], 
+                                                             Password.user_id == user[0].user_id)).unique().scalar_one_or_none()
         
         if password is None:
           raise ValueError('Invalid Password!')

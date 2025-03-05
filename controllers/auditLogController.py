@@ -13,7 +13,7 @@ def find(user_id):
   try:
     logs = auditLogService.find(user_id)
     if logs is not None:
-      return audit_logs_schema.jsonify(logs), 201
+      return audit_logs_schema.jsonify(logs), 200
   
   except ValueError as e:
     return jsonify({"Error": str(e)}),400

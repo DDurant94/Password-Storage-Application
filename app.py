@@ -21,6 +21,7 @@ from routes.folderBP import folder_blueprint
 from routes.passwordBP import password_blueprint
 from routes.passwordHistBP import password_history_blueprint
 from routes.auditLogBP import audit_blueprint
+from routes.securityQuestionBP import security_question_blueprint
 
 def create_app(config_name):
   app = Flask(__name__)
@@ -45,6 +46,7 @@ def blue_print_config(app):
   app.register_blueprint(password_blueprint,url_prefix = '/password')
   app.register_blueprint(password_history_blueprint,url_prefix = '/history')
   app.register_blueprint(audit_blueprint,url_prefix = '/audit')
+  app.register_blueprint(security_question_blueprint,url_prefix = '/security')
   
 def configure_rate_limit():
   pass

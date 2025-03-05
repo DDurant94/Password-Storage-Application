@@ -59,15 +59,15 @@ def update(user_id,folder_data):
   with Session(db.engine) as session:
     with session.begin():
       user = find_user(user_id)
-      folder = session.query(Folder).filter(Folder.folder_id == folder_data['folder_id'],
-                                            Folder.user_id == user[0].user_id).one_or_none()
+      folder = session.execute(db.select(Folder).where(Folder.folder_id == folder_data['folder_id'],
+                                                       Folder.user_id == user[0].user_id)).unique().scalar_one_or_none()
       
       if not folder:
         raise ValueError("Folder not found!")
       
       if folder_data['folder_name']:
-        existing_folder = session.query(Folder).filter(Folder.folder_name == folder_data['folder_name'],
-                                                       Folder.user_id == user[0].user_id).one_or_none()
+        existing_folder = session.execute(db.select(Folder).where(Folder.folder_name == folder_data['folder_name'],
+                                                                  Folder.user_id == user[0].user_id)).unique().scalar_one_or_none()
         
         if existing_folder and existing_folder.folder_id != folder.folder_id:
             raise ValueError("Folder name should be unique")
@@ -75,8 +75,8 @@ def update(user_id,folder_data):
         folder.folder_name = folder_data['folder_name']
       
       if folder_data['parent_folder_id'] is not None:
-        parent_folder = session.query(Folder).filter(Folder.folder_id == folder_data['parent_folder_id'],
-                                                     Folder.user_id == user[0].user_id).one_or_none()
+        parent_folder = session.execute(db.select(Folder).where(Folder.folder_id == folder_data['parent_folder_id'],
+                                                                Folder.user_id == user[0].user_id)).unique().scalar_one_or_none()
           
         if parent_folder is None:
           raise ValueError("Parent folder doesn't exist")
