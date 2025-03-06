@@ -19,7 +19,7 @@ def all_passwords_hist(user_id):
     if all_history is not None:
       return password_histories_schema.jsonify(all_history), 201
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
 
 @token_required 
 def password_hist_by_name(user_id,search_name):
@@ -31,5 +31,5 @@ def password_hist_by_name(user_id,search_name):
     if history is not None:
       return password_histories_schema.jsonify(history), 201
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
   

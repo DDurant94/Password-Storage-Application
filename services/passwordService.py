@@ -81,7 +81,7 @@ def find_password(user_id, name):
                                                     Password.password_name == name).one_or_none()
   
   if password_data is None:
-    raise ValueError(f"'{name}' not found!")
+    return None
   
   password_data.encripted_password = decrypted(user[1],password_data.encripted_password)
   

@@ -19,7 +19,7 @@ def save(user_id):
     password_save = passwordService.save(user_id,password_data)
     return password_schema.jsonify(password_save), 201
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
 
 @token_required
 def find_passwords(user_id): 
@@ -28,7 +28,7 @@ def find_passwords(user_id):
     if passwords is not None:
       return passwords_schema.jsonify(passwords), 201
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
 
 @token_required
 def find_password(user_id,name):
@@ -36,8 +36,12 @@ def find_password(user_id,name):
     passwords = passwordService.find_password(user_id,name)
     if passwords is not None:
       return password_schema.jsonify(passwords), 201
+    
+    else:
+      return jsonify({'message': f"Couldn't find '{name}'"}), 404
+    
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
 
 @token_required
 def update(user_id):
@@ -52,7 +56,7 @@ def update(user_id):
     return password_schema.jsonify(password_updated), 201
     
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
 
 @token_required 
 def delete(user_id):
@@ -71,4 +75,4 @@ def delete(user_id):
       return jsonify({"message": f"Couldn't find Password '{password_data['password_name']}'"}), 404
     
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422

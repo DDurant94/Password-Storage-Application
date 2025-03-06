@@ -22,7 +22,7 @@ def save():
     else:
       return jsonify({"message": "Wait 10 seconds and try again!", "body":user_data}),400
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422
 
 @token_required
 def find_by_id(user_id):
@@ -30,7 +30,7 @@ def find_by_id(user_id):
     user = userService.find_by_id(int(user_id))
     return user_schema.jsonify(user), 200
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422
 
 @token_required
 def update(user_id):
@@ -49,7 +49,7 @@ def update(user_id):
       return jsonify({"message": "Wait 10 seconds and try again!", "body":"Use a different username."}),400
     
   except ValueError as e:
-     return jsonify({"Error": str(e)}),400
+     return jsonify({"Error": str(e)}),422
    
 def login_user():
   user_data = request.json
@@ -66,7 +66,7 @@ def login_user():
       "message": f"Invalid {user[1]}"
     }
       
-    return jsonify(resp), 400
+    return jsonify(resp), 422
 
 @token_required
 def delete(user_id):

@@ -1,0 +1,390 @@
+swagger: '2.0'
+info:
+  title: Password Keeper
+  description: Application API for handing and safe storage of passwords, usernames and emails
+  version: 1.0.0
+host: 127.0.0.1:5000
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+
+  /user/:
+    get:
+      tags:
+        - users
+      summary: Get user by ID in JWT (JSON Web Token) Endpoint
+      description: Retrieve users Information
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/User'
+          examples:
+            application/json:
+              - user_id: 1
+              - username: Admin01
+              - password: scrypt:32768:8:1$yAzAGIjKbacf9fc...
+              - first_name: Daniel
+              - last_name: Durant
+              - email: dannyjdurant@gmail.com
+              - role: admin
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+
+      security:
+        - bearerAuth: []
+
+  # /roles:
+
+  # /folder:
+
+  # /password:
+
+  # /history:
+
+  # /audit:
+
+  # /security:
+
+
+definitions:
+
+  User:
+    type: object
+    properties:
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number
+
+      username:
+        type: string
+        description: Unique name for logging users into their account
+
+      password:
+        type: string
+        format: password
+        description: Password for verification of the correct user
+
+      first_name:
+        type: string
+        description: The given name of a person
+
+      last_name:
+        type: string
+        description: The family name of a person
+
+      email:
+        type: string
+        format: email
+        description: Email address accociated with the account
+
+      created_date:
+        type: string
+        format: datetime
+        description: Time that user makes their accout
+
+      updated_date:
+        type: string
+        format: datetime
+        description: Time that user updated their account last
+
+      role:
+        type: string
+        description: Role that is associated with the user allowing access to various endpoints
+      key:
+        type: string
+        description: Unique set of characters that is used as a type of salt
+    
+    required:
+      - username
+      - password
+      - first_name
+      - last_name
+      - email
+
+  Role:
+    type: object
+    properties: 
+      role_id:
+        type: integer
+        format: int64
+        description: Roles unique ID number
+      
+      role_name:
+        type: string
+        description: Name of the role
+    required:
+      - role_name
+
+  Folder:
+    type: object
+    properties: 
+      folder_id:
+        type: integer
+        format: int64
+        description: Folder unique ID number
+      
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      parent_folder_id:
+        type: integer
+        format: int64
+        description: Folders unique ID number used as a foreign key
+
+      folder_name:
+        type: string
+        description: Name of the folder 
+
+      created_date:
+        type: string
+        format: datetime
+        description: Time that the folder was created
+
+    required:
+      - user_id
+
+  Password:
+    type: object
+    properties: 
+      password_id:
+        type: integer
+        format: int64
+        description: Password unique ID number
+
+      folder_id:
+        type: integer
+        format: int64
+        description: Folder unique ID number used as a foreign key
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      password_name:
+        type: string
+        description: Name of the password
+
+      username:
+        type: string
+        description: Username that associated with the password
+      
+      email:
+        type: string
+        description: Email that is associated with the password
+
+      encripted_password:
+        type: string
+        description: Password to be stored for safe keeping
+
+      created_date:
+        type: string
+        format: datetime
+        description: Time that the password was added
+
+      last_updated_date:
+        type: string
+        format: datetime
+        description: Time that the password was last updated
+
+    required:
+      - user_id
+      - email
+      - encripted_password
+
+  PasswordHistory:
+    type: object
+    properties: 
+      history_id:
+        type: integer
+        format: int64
+        description: Password history unique ID number
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      password_id:
+        type: integer
+        format: int64
+        description: Password unique ID number
+
+      password_name:
+        type: string
+        description: Name of the password
+
+      email:
+        type: string
+        description: Email that is associated with the password
+
+      username:
+        type: string
+        description: Username that associated with the password
+
+      old_encripted_password:
+        type: string
+        description: Password to be tracked and stored for history
+
+      changed_date:
+        type: string
+        format: datetime
+        description: Time that the password was last updated
+
+    required:
+      - user_id
+      - password_id
+      - email
+      - old_encripted_password
+
+  AuditLog:
+    type: object
+    properties: 
+      audit_id:
+        type: integer
+        format: int64
+        description: Audit Log unique ID number
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      action:
+        type: string
+        description: Activity that was being logged
+
+      details:
+        type: string
+        description: The actions that were being done
+
+      ip_address:
+        type: string
+        description: IP address of the user that is being logged
+
+    required:
+      - user_id
+      - action
+      - ip_address
+
+  SecurityQuestion:
+    type: object
+    properties: 
+      question_id:
+        type: integer
+        format: int64
+        description: Security Question unique ID number
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      question:
+        type: string
+        description: Security question that the user sets to have an extra layer of protection when recovering their account
+
+      encripted_answer:
+        type: string
+        description: Answer to the security question
+
+    required:
+      - user_id
+      - question
+      - encripted_answer
+
+  LoginCredentials:
+    type: object
+    properties:
+      username:
+        type: string
+        description: username
+      password:
+        type: string
+        format: password
+        description: Password
+    required:
+      - username
+      - password
+
+  LoginResponse:
+    type: object
+    properties: 
+      auth_token:
+        type: string
+        description: Authentication token
+      message:
+        type: string
+        description: Message indicating success or failure
+      status: 
+        type: string
+        description: Status of the operation
+    required:
+      - auth_token
+      - message
+
+  DeleteResponse:
+    type: object
+    properties: 
+      message:
+        type: string
+        description: Message indicating success or failure
+    required:
+      - message
+
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Status of the error
+      message:
+        type: string
+        description: Description of the error
+    required:
+      - status
+      - message

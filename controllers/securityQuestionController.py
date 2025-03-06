@@ -21,10 +21,10 @@ def save(user_id):
     if question is not None:
       return security_question_schema.jsonify(question), 201
     else:
-      return jsonify({'message': 'invalid security question'}), 400
+      return jsonify({'message': 'invalid security question'}), 422
   
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422
   
 @token_required
 def find(user_id):
@@ -34,9 +34,10 @@ def find(user_id):
       return security_questions_schema.jsonify(questions), 200
     
     else:
-      return jsonify({"message": "No Security Questions found!"}), 400
+      return jsonify({"message": "No Security Questions found!"}), 404
+    
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422
   
 @token_required
 def update(user_id):
@@ -51,7 +52,7 @@ def update(user_id):
     return security_question_schema.jsonify(new_question),201
     
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422
   
 @token_required
 def delete(user_id):
@@ -67,4 +68,4 @@ def delete(user_id):
       return jsonify({'message': "Question removed successfully"}), 200
     
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422

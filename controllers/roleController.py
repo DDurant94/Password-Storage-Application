@@ -49,11 +49,12 @@ def delete(user_id):
   try:
     role_data = role_schema.load(request.json)
   except ValidationError as err:
-    return jsonify(err.messages),400
+    return jsonify(err.messages),422
   
   try:
     deleted_role = roleService.delete(user_id,role_data)
     if deleted_role == 'successful':
       return jsonify({'message': "Role removed successfully"}), 200
+    
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422

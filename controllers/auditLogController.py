@@ -16,4 +16,4 @@ def find(user_id):
       return audit_logs_schema.jsonify(logs), 200
   
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422

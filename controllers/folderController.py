@@ -22,7 +22,7 @@ def save(user_id):
       return folder_schema.jsonify(folder_save), 201
   
   except ValueError as e:
-    return jsonify({"Error": str(e)}),400
+    return jsonify({"Error": str(e)}),422
 
 @token_required
 def find_user_folders(user_id):
@@ -48,7 +48,7 @@ def update(user_id):
       return folder_schema.jsonify(update_folder), 201
     
   except ValueError as e:
-    return jsonify({"Error": str(e)}), 400
+    return jsonify({"Error": str(e)}),422
 
 @token_required
 def delete(user_id):

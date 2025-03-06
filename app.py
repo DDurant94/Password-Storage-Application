@@ -23,6 +23,18 @@ from routes.passwordHistBP import password_history_blueprint
 from routes.auditLogBP import audit_blueprint
 from routes.securityQuestionBP import security_question_blueprint
 
+SWAGGER_URL = '/password-keeper-api/docs/'
+API_URL = '/static/swagger.yaml'
+
+swagger_blueprint = get_swaggerui_blueprint(
+  SWAGGER_URL,
+  API_URL,
+  config={
+    'app_name': 'Password Keeper'
+  }
+)
+
+
 def create_app(config_name):
   app = Flask(__name__)
   app.config.from_object(f"config.{config_name}")
@@ -47,19 +59,20 @@ def blue_print_config(app):
   app.register_blueprint(password_history_blueprint,url_prefix = '/history')
   app.register_blueprint(audit_blueprint,url_prefix = '/audit')
   app.register_blueprint(security_question_blueprint,url_prefix = '/security')
+  app.register_blueprint(swagger_blueprint,url_prefix=SWAGGER_URL)
   
 def configure_rate_limit():
   pass
 
-app = create_app("DevelopmentConfig")
-blue_print_config(app)
-configure_rate_limit()
+
 
 if __name__ == "__main__":
 
+  app = create_app("DevelopmentConfig")
+  blue_print_config(app)
+  configure_rate_limit()
   
   with app.app_context():
-    db.drop_all()
     db.create_all()
     
     
