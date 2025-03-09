@@ -21,7 +21,7 @@ def save(user_id):
     if question is not None:
       return security_question_schema.jsonify(question), 201
     else:
-      return jsonify({'message': 'invalid security question'}), 422
+      return jsonify({'message': 'Invalid security question'}), 422
   
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
@@ -66,6 +66,9 @@ def delete(user_id):
     
     if question == 'successful':
       return jsonify({'message': "Question removed successfully"}), 200
+    
+    else:
+      return jsonify({'message': 'Question Not Found'}), 404
     
   except ValueError as e:
     return jsonify({"Error": str(e)}),422

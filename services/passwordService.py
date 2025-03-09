@@ -145,4 +145,17 @@ def delete(user_id,password_data):
       
       session.delete(password)
       session.commit()
-  return 'successful' 
+  return 'successful'
+
+def finder(key,user,rekeyed):
+  with Session(db.engine) as session:
+    with session.begin():
+      passwords = session.execute(db.select(Password).where(Password.user_id == user.user_id,)).scalars().all()
+      
+      if passwords != []:
+        for password in passwords:
+          password.encripted_password = decrypted(key,password.encripted_password)
+          password.encripted_password = encrypted(rekeyed,password.encripted_password)
+          
+      session.commit()
+  return passwords

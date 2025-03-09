@@ -3,7 +3,7 @@ from database import db
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from utils.util import find_user,make_key,decript
+from utils.util import find_user,make_key,decript, decrypted, encrypted
 
 from models.passwordHist import PasswordHistory
 from models.user import User
@@ -59,3 +59,15 @@ def delete(user_id,password_data):
         
       session.commit()
   return 'successful'
+
+def finder(key,user,rekeyed):
+  with Session(db.engine) as session:
+    with session.begin():
+      histories = session.execute(db.select(PasswordHistory).where(PasswordHistory.user_id == user.user_id,)).scalars().all()
+      if histories != []:
+        for history in histories:
+          history.old_encripted_password = decrypted(key, history.old_encripted_password)
+          history.old_encripted_password = encrypted(rekeyed, history.old_encripted_password)
+      session.commit()
+      
+  return histories

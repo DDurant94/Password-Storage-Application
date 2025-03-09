@@ -45,9 +45,6 @@ def update(user_id):
     if updated_user is not None:
       return user_schema.jsonify(updated_user), 201
     
-    else:
-      return jsonify({"message": "Wait 10 seconds and try again!", "body":"Use a different username."}),400
-    
   except ValueError as e:
      return jsonify({"Error": str(e)}),422
    

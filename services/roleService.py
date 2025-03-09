@@ -63,8 +63,9 @@ def delete(user_id,role_data):
       for mng_role in umr:
         mng_role.role_id = user_role.role_id
       
-      for user in users:
-        user.role = 'user'
+      if users != []:
+        for user in users:
+          user.role = 'user'
         
       session.delete(role)
       session.commit()

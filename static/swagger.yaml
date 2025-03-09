@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Password Keeper
-  description: Application API for handing and safe storage of passwords, usernames and emails
+  description: The Password Keeper API provides a secure and interactive platform for the safe storage and management of user credentials and associated data. Its main purpose is to handle sensitive information such as passwords, usernames, emails, account history, and activity logs, while ensuring robust security and convenience for its users. To access and utilize the various endpoints of the API, users must first create an account, log in, and authenticate their session. Authentication is accomplished by obtaining a token during login, typing 'Bearer ' followed by the token value, and pasting it into the "Authorize" field in the interactive documentation interface. This grants users access to protected endpoints.
   version: 1.0.0
 host: 127.0.0.1:5000
 schemes:
@@ -20,9 +20,11 @@ paths:
   /user/:
     get:
       tags:
-        - users
-      summary: Get user by ID in JWT (JSON Web Token) Endpoint
-      description: Retrieve users Information
+        - Users
+      summary: Get users deatils Endpoint
+      description: Retrieve users Information. The JWT (JSON Web Token) is used to accociate the user to the users account details.
+      produces:
+        - application/json
       responses:
         200:
           description: Successful response
@@ -31,17 +33,15 @@ paths:
             $ref: '#/definitions/User'
           examples:
             application/json:
-              - user_id: 1
-              - username: Admin01
-              - password: scrypt:32768:8:1$yAzAGIjKbacf9fc...
-              - first_name: Daniel
-              - last_name: Durant
-              - email: dannyjdurant@gmail.com
-              - role: admin
-        400:
-          description: Invalid input
-          schema:
-            $ref: '#/definitions/Error'
+                user_id: 1
+                username: Admin01
+                password: scrypt:32768:8:1$yAzAGIjKbacf9fc...
+                first_name: Daniel
+                last_name: Durant
+                email: dannyjdurant@gmail.com
+                role: admin
+                created_date: '2025-03-05T22:59:53'
+                updated_date: '2025-03-05T22:59:53'
         401:
           description: Unauthorized
           schema:
@@ -73,17 +73,1460 @@ paths:
       security:
         - bearerAuth: []
 
-  # /roles:
+    post:
+      tags:
+        - Users
+      summary: Post a new users Endpoint
+      description: Adds a new user to the database
+      parameters:
+        - in: body
+          name: body
+          description: user data
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredentials'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/User'
+          examples:
+            application/json:
+                user_id: 1
+                username: Admin01
+                password: scrypt:32768:8:1$yAzAGIjKbacf9fc...
+                first_name: Daniel
+                last_name: Durant
+                email: dannyjdurant@gmail.com
+                role: user
+                created_date: '2025-03-05T22:59:53'
+                updated_date: '2025-03-05T22:59:53'
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Wait 10 seconds and try again!
+                body: 
+                  - username: username
+                    password: password
+                    first_name: first name
+                    last_name: last name
+                    email: email@example.com
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Failure condition triggered | Role Not Found! Add Role or Change Role | User Already Exists!
 
-  # /folder:
+    put:
+      tags:
+        - Users
+      summary: Update a users Endpoint
+      description: Updates a user in the database
+      parameters:
+        - in: body
+          name: body
+          description: user data
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/User'
+          examples:
+            application/json:
+                user_id: 1
+                username: Admin01
+                password: scrypt:32768:8:1$yAzAGIjKbacf9fc...
+                first_name: Daniel
+                last_name: Durant
+                email: dannyjdurant@gmail.com
+                role: user
+                created_date: '2025-03-05T22:59:53'
+                updated_date: '2025-03-05T22:59:53'
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Wait 10 seconds and try again!
+                body: 
+                  - username: username
+                    password: password
+                    first_name: first name
+                    last_name: last name
+                    email: email@example.com
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Failure condition triggered | Role Not Found! Add Role or Change Role | User Already Exists!
+      security:
+        - bearerAuth: []
 
-  # /password:
+    delete:
+      tags:
+        - Users
+      summary: Remove user Endpoint
+      description: Removes user from the database. The JWT (JSON Web Token) is used to accociate the user.
+      parameters:
+        - in: body
+          name: body
+          description: user data
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/User'
+          examples:
+            application/json:
+                message: User removed successfully
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Couldn't find User with ID {1}
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
 
-  # /history:
+  /user/login:
+    post:
+      tags:
+        - Users
+      summary: Login user Endpoint
+      description: Endpoint for user login.
+      parameters:
+        - in: body
+          name: body
+          description: Credentials for login
+          required: true
+          schema:
+            $ref: '#/definitions/LoginCredentials'
+      responses:
+        200:
+          description: Login successful
+          schema:
+            $ref: '#/definitions/LoginResponse'
+          examples:
+            application/json:
+              value:
+                auth_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                message: Login successful
+                status: success
+        422:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Invalid Username | Invalid Password
 
-  # /audit:
 
-  # /security:
+  /roles/:
+    get:
+      tags:
+        - Roles
+      summary: Get all roles Endpoint
+      description: Retrieving a list of all roles. The JWT (JSON Web Token) is used to accociate the user to the correct role to retrieve data. Only an admin can get infromation from this endpoint.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Role'
+          examples:
+            application/json:
+              - role_id: 1
+                role_name: admin
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+      security:
+        - bearerAuth: []
+        - roleAuth: ['admin']
+
+    post:
+      tags:
+        - Roles
+      summary: Posting a new role to the database
+      description: Adding a new role to the database (Must be an Admin to do this!)
+      parameters:
+        - in: body
+          name: body
+          description: Role data
+          required: true
+          schema:
+            $ref: '#/definitions/RoleCredentials'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/Role'
+          examples:
+            application/json:
+              role_name: user
+              role_id: 1
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Role already In Database
+      security:
+        - bearerAuth: []
+        - roleAuth: ['admin']
+
+    put:
+      tags:
+        - Roles
+      summary: Updating a role that is in the database
+      description: Updating a role that is in the database (Must be an Admin to do this!). This will update any user that has the role to be updated as their role.
+      parameters:
+        - in: body
+          name: body
+          description: Role data
+          required: true
+          schema:
+            $ref: '#/definitions/Role'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/Role'
+          examples:
+            application/json:
+              role_name: updated role_name
+              role_id: 1
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Role Not Found!
+      security:
+        - bearerAuth: []
+        - roleAuth: ['admin']
+
+    delete:
+      tags:
+        - Roles
+      summary: Deleting role from database
+      description: Deleting a role that is in the database (Must be an Admin to do this!). Can not delete admin or user from database. Any role other than those when deleted will revert that user back to a user role.
+      parameters:
+        - in: body
+          name: body
+          description: Role data
+          required: true
+          schema:
+            $ref: '#/definitions/Role'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/Role'
+          examples:
+            application/json:
+              message: Role removed successfully
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Role Not Found! | Can not delete 'admin' role! | Can not delete 'user' role!
+      security:
+        - bearerAuth: []
+        - roleAuth: ['admin']
+
+
+  /folder/:
+    get:
+      tags:
+        - Folders
+      summary: Get all users folders Endpoint
+      description: Retrieving a list of all of users folders. Parent folder ID can be a null (Root folder) value or can be an integer. The JWT (JSON Web Token) is used to accociate the user to the folders.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Folder'
+          examples:
+            application/json:
+              - folder_id: 1
+                user_id: 1
+                parent_folder_id: 1 
+                folder_name: Emails
+                created_date: '2025-03-05T22:59:53'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Could not find any folders
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+    post:
+      tags:
+        - Folders
+      summary: Create a new folder Endpoint
+      description: Create a new folder accociated with the user. Parent folder ID can be a null (Root folder) value or can be an integer. The JWT (JSON Web Token) is used to accociate the user to the folder.
+      parameters:
+        - in: body
+          name: body
+          description: Folder data
+          required: true
+          schema:
+            $ref: '#/definitions/FolderCredentials'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Folder'
+          examples:
+            application/json:
+              - folder_id: 1
+                user_id: 1
+                parent_folder_id: null
+                folder_name: Emails
+                created_date: '2025-03-05T22:59:53'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! | Folder name should be unique | Parent folder doesn't exist
+      security:
+        - bearerAuth: []
+
+    put:
+      tags:
+        - Folders
+      summary: Updating an exsisting folder Endpoint
+      description: Updating an exsisting folder accociated with the user. Parent folder ID can be a null (Root folder) value or can be an integer. The JWT (JSON Web Token) is used to accociate the user to the folder.
+      parameters:
+        - in: body
+          name: body
+          description: Folder data
+          required: true
+          schema:
+            $ref: '#/definitions/Folder'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Folder'
+          examples:
+            application/json:
+              - folder_id: 1
+                user_id: 1
+                parent_folder_id: null
+                folder_name: Emails
+                created_date: '2025-03-05T22:59:53'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! | Folder not found! | Folder name should be unique | Parent folder doesn't exist
+      security:
+        - bearerAuth: []
+
+    delete:
+      tags:
+        - Folders
+      summary: Deleteing a folder Endpoint
+      description: Deleteing a folder accociated with the user, folder_name and folder_id. Parent and child folders are automaticlly updated to the next accociated file or become the root folder. The passwords within that folder are not deleted when this is run. The JWT (JSON Web Token) is used to accociate the user to the folder.
+      parameters:
+        - in: body
+          name: body
+          description: Folder data
+          required: true
+          schema:
+            $ref: '#/definitions/Folder'      
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Folder'
+          examples:
+            application/json:
+              message: Folder has be removed!
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Couldn't find folder '{folder_name}'
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+
+  /password/:
+    get:
+      tags:
+        - Passwords
+      summary: Get all users stored passwords Endpoint
+      description: Retrieving a list of all of users stored passwords. (excluding loggin password) The JWT (JSON Web Token) is used to accociate the user to the passwords.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+              - folder_id: 1
+                user_id: 1
+                password_name: Name of Password 
+                username: username
+                email: email@example.com
+                encripted_password: password
+                created_date: '2025-03-05T22:59:53'
+                last_updated_date: '2025-03-05T22:59:53'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! 
+      security:
+        - bearerAuth: []
+
+    post:
+      tags:
+        - Passwords
+      summary: Create a new password Endpoint
+      description: Create a new password accociated with the user. folder ID can be a null (Root folder) value or can be an integer. The JWT (JSON Web Token) is used to accociate the user to the folder.
+      parameters:
+        - in: body
+          name: body
+          description: Password data
+          required: true
+          schema:
+            $ref: '#/definitions/PasswordCredentials'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+              - folder_id: 1
+                user_id: 1
+                password_name: title_of_password
+                username: username
+                encripted_password: gAAAAABnyzusGlQtzeLxHpokEAkWs1LYeQwdFO8j...
+                created_date: '2025-03-05T22:59:53'
+                last_updated_date: '2025-03-05T22:59:53'
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! | Folder not found!
+      security:
+        - bearerAuth: []
+
+    put:
+      tags:
+        - Passwords
+      summary: Updating an exsisting password Endpoint
+      description: Updating an exsisting password accociated with the user. The password_name can be left blank (""). Folder ID can be a null (Root folder) value or can be an integer. The JWT (JSON Web Token) is used to accociate the user to the password.
+      parameters:
+        - in: body
+          name: body
+          description: Password data
+          required: true
+          schema:
+            $ref: '#/definitions/Password'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+              - folder_id: 1
+                user_id: 1
+                password_name: title_of_password
+                username: username
+                encripted_password: gAAAAABnyzusGlQtzeLxHpokEAkWs1LYeQwdFO8j...
+                created_date: '2025-03-05T22:59:53'
+                last_updated_date: '2025-03-05T22:59:53'
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! | Folder not found! | Invalid Password!
+      security:
+        - bearerAuth: []
+
+    delete:
+      tags:
+        - Passwords
+      summary: Deleteing a password Endpoint
+      description: Deleteing a password accociated with the user, password_id. The JWT (JSON Web Token) is used to accociate the user to the folder.
+      parameters:
+        - in: body
+          name: body
+          description: Password data
+          required: true
+          schema:
+            $ref: '#/definitions/Password'      
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+              message: Password has be removed!
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Couldn't find Password '{password_name}'
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+  /password/search={name}:
+    get:
+      tags:
+        - Passwords
+      summary: Get users searched password Endpoint
+      description: Retrieving a searched password that the user has stored in the database. (excluding loggin password) The JWT (JSON Web Token) is used to accociate the user to the password.
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: path
+          required: True
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+                folder_id: 1
+                user_id: 1
+                password_name: Name of Password 
+                username: username
+                email: email@example.com
+                encripted_password: password
+                created_date: '2025-03-05T22:59:53'
+                last_updated_date: '2025-03-05T22:59:53'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Could not find 'search'
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+
+  /history/:
+    get:
+      tags:
+        - Password History
+      summary: Get all users stored password history Endpoint
+      description: Retrieving a list of all of users stored password history. (excluding loggin password history) The JWT (JSON Web Token) is used to accociate the user to the password history.
+      produces:
+        - application/json      
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+              - history_id: 1
+                user_id: 1
+                password_id: 1 
+                password_name: title_of_password
+                username: username
+                email: email@example.com
+                old_encripted_password: password
+                change_date: '2025-03-05T22:59:53'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+  /history/search={name}:
+      get:
+        tags:
+          - Password History
+        summary: Get users searched password history Endpoint
+        description: Retrieving a searched password history that the user has stored in the database. (excluding loggin password history) The JWT (JSON Web Token) is used to accociate the user to the password history.
+        produces:
+          - application/json
+        parameters:
+          - name: name
+            in: path
+            required: True
+            type: string
+        responses:
+          200:
+            description: Successful response
+            schema:
+              type: object
+              $ref: '#/definitions/Password'
+            examples:
+              application/json:
+                  history_id: 1
+                  user_id: 1
+                  password_id: 1 
+                  password_name: title_of_password
+                  username: username
+                  email: email@example.com
+                  old_encripted_password: password
+                  change_date: '2025-03-05T22:59:53'
+          401:
+            description: Unauthorized
+            schema:
+              $ref: '#/definitions/Error'
+            examples:
+              application/json:
+                value:
+                  status: error
+                  message: token is missing | token has expired | invalid token
+          403:
+            description: Forbidden
+            schema:
+              $ref: '#/definitions/Error'
+            examples:
+              application/json:
+                value:
+                  status: error
+                  message: User does not have required role
+          404:
+            description: Not Found
+            schema:
+              $ref: '#/definitions/Error'
+            examples:
+              application/json:
+                value:
+                  status: error
+                  message: No password History for 'search'
+          422:
+            description: Unprocessable Entity
+            schema:
+              $ref: '#/definitions/Error'
+            examples:
+              application/json:
+                value:
+                  status: error
+                  message: User not found!
+        security:
+          - bearerAuth: []
+
+
+  /audit/:
+    get:
+      tags:
+        - Audit Log
+      summary: Get all users audit history Endpoint
+      description: Retrieving a list of all of users stored audit history. The JWT (JSON Web Token) is used to accociate the user to the audit history.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/Password'
+          examples:
+            application/json:
+              - audit_id: 1
+                user_id: 1
+                action: Creation | Update | Login
+                details: Creating User Account | 'username' Updated first name, last name, email, password | Successfully logged in | Failed login Password
+                time_stamp: '2025-03-05T22:59:53'
+                ip_address: '127.0.0.1'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+
+  /security/:
+    get:
+      tags:
+        - Security Question
+      summary: Get users Security Questions Endpoint
+      description: Retrieving the users stored security questions in the database. The JWT (JSON Web Token) is used to accociate the user to the security questions. The user can only have three security questions max.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            $ref: '#/definitions/SecurityQuestion'
+          examples:
+            application/json:
+                question_id: 1
+                user_id: 1
+                question: Question that the user sets 
+                encripted_answer: Answer to the question
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: No Security Questions found!
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
+
+    post:
+      tags:
+        - Security Question
+      summary: Create a security quesyion Endpoint
+      description: Create a new security question accociated with the user. The JWT (JSON Web Token) is used to accociate the user to the question.
+      parameters:
+        - in: body
+          name: body
+          description: Question data
+          required: true
+          schema:
+            $ref: '#/definitions/SecurityQuestionCredentials'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/SecurityQuestion'
+          examples:
+            application/json:
+              - question_id: 1
+                user_id: 1 
+                question: Users question
+                encripted_answer: gAAAAABnyzusGlQtzeLxHpokEAkWs1LYeQwdFO8j...
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! | Question already stored | '{username}' has three questions already. Update a question if you want to add this question.
+      security:
+        - bearerAuth: []
+
+    put:
+      tags:
+        - Security Question
+      summary: Update an exsisting security quesyion Endpoint
+      description: Update an exsisting security question accociated with the user. The JWT (JSON Web Token) is used to accociate the user to the question.
+      parameters:
+        - in: body
+          name: body
+          description: Question data
+          required: true
+          schema:
+            $ref: '#/definitions/SecurityQuestion'
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/SecurityQuestion'
+          examples:
+            application/json:
+              - question_id: 1
+                user_id: 1 
+                question: Users question
+                encripted_answer: gAAAAABnyzusGlQtzeLxHpokEAkWs1LYeQwdFO8j...
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        400:
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: "Invalid credentials"
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found! | Question Not Found
+      security:
+        - bearerAuth: []
+
+    delete:
+      tags:
+        - Security Question
+      summary: Deleteing a password Endpoint
+      description: Deleteing a security question accociated with the user. The JWT (JSON Web Token) is used to accociate the user to the question.
+      parameters:
+        - in: body
+          name: body
+          description: Password data
+          required: true
+          schema:
+            $ref: '#/definitions/SecurityQuestion'      
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            $ref: '#/definitions/SecurityQuestion'
+          examples:
+            application/json:
+              message: Question removed successfully
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: token is missing | token has expired | invalid token
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User does not have required role
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: Question Not Found
+        422:
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: error
+                message: User not found!
+      security:
+        - bearerAuth: []
 
 
 definitions:
@@ -337,6 +1780,141 @@ definitions:
       - question
       - encripted_answer
 
+
+  UserCredentials:
+    type: object
+    properties:
+
+      username:
+        type: string
+        description: Unique name for logging users into their account
+
+      password:
+        type: string
+        format: password
+        description: Password for verification of the correct user
+
+      first_name:
+        type: string
+        description: The given name of a person
+
+      last_name:
+        type: string
+        description: The family name of a person
+
+      email:
+        type: string
+        format: email
+        description: Email address accociated with the account
+    required:
+      - username
+      - password
+      - first_name
+      - last_name
+      - email
+
+  RoleCredentials:
+    type: object
+    properties:
+      role_name:
+        type: string
+        description: Name of the role
+    required:
+      - role_name
+
+  FolderCredentials:
+    type: object
+    properties: 
+      folder_id:
+        type: integer
+        format: int64
+        description: Folder unique ID number
+      
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      parent_folder_id:
+        type: integer
+        format: int64
+        description: Folders unique ID number used as a foreign key
+
+      folder_name:
+        type: string
+        description: Name of the folder 
+
+    required:
+      - user_id
+      - parent_folder_id
+      - folder_name
+
+  PasswordCredentials:
+    type: object
+    properties: 
+
+      folder_id:
+        type: integer
+        format: int64
+        description: Folder unique ID number used as a foreign key
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      password_name:
+        type: string
+        description: Name of the password
+
+      username:
+        type: string
+        description: Username that associated with the password
+      
+      email:
+        type: string
+        description: Email that is associated with the password
+
+      created_date:
+        type: string
+        format: datetime
+        description: Time that the password was added
+
+      last_updated_date:
+        type: string
+        format: datetime
+        description: Time that the password was last updated
+
+    required:
+      - user_id
+      - folder_id
+      - password_name
+      - username
+      - email
+      - encripted_password
+
+  SecurityQuestionCredentials:
+    type: object
+    properties: 
+
+      user_id:
+        type: integer
+        format: int64
+        description: Users unique ID number used as a foreign key
+
+      question:
+        type: string
+        description: Security question that the user sets to have an extra layer of protection when recovering their account
+
+      encripted_answer:
+        type: string
+        description: Answer to the security question
+
+    required:
+      - user_id
+      - question
+      - encripted_answer
+
   LoginCredentials:
     type: object
     properties:
@@ -350,6 +1928,7 @@ definitions:
     required:
       - username
       - password
+
 
   LoginResponse:
     type: object

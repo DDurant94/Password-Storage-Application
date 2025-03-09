@@ -41,3 +41,14 @@ def find(user_id):
     log.ip_address = decrypted(user[1], log.ip_address)
   
   return query
+
+def finder(key,user,rekeyed):
+  with Session(db.engine) as session:
+    with session.begin():
+      audits = session.execute(db.select(AuditLog).where(AuditLog.user_id == user.user_id,)).scalars().all()
+      if audits != []:
+        for log in audits:
+          log.ip_address = decrypted(key, log.ip_address)
+          log.ip_address = encrypted(rekeyed,log.ip_address)
+      session.commit()
+  return audits  

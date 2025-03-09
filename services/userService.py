@@ -5,17 +5,41 @@ from sqlalchemy import select
 from circuitbreaker import circuit
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from utils.util import encode_token, time, salt_maker as salt, find_user
+from utils.util import encode_token, time, salt_maker as salt, find_user, make_key, rekey
 
-from services.auditLogService import save as audit_log
+from services.auditLogService import save as audit_log, finder as fal
+from services.passwordService import finder as fp
+from services.passwordHistService import finder as fph
+from services.securityQuestionService import finder as fsq
 
 from models.user import User
 from models.role import Role
 from models.userManagement import UserManagementRole as UMR 
 
+##
+###
+#### Helper Functions
+###
+##
+
 # Fallback function incase of an error
 def fallback_function(*user):
   return None
+
+def update_getter(user,new_password):
+  key = make_key(user)
+  rekeyed = rekey(user, new_password) 
+  audits = fal(key,user,rekeyed)
+  passwords = fp(key,user,rekeyed)
+  history = fph(key,user,rekeyed)
+  questions = fsq(key,user,rekeyed)
+  return [audits,passwords,history,questions]
+
+##
+###
+#### MAIN FUNCS
+###
+##
 
 # Adding a new user
 @circuit(failure_threshold=1,recovery_timeout=10,fallback_function=fallback_function)
@@ -79,25 +103,30 @@ def update(user_data,user_id):
     with Session(db.engine) as session:
       with session.begin():
         user = session.execute(db.select(User).where(User.user_id == int(user_id))).unique().scalar_one_or_none()
+        
+        if user is None:
+          raise ValueError("User not Found!")
                 
         details = f"'{user.username}' updated "
         
         if user.first_name != user_data['first_name']:
+          user.first_name = user_data['first_name']
           details += 'first name, '
           
         if user.last_name != user_data['last_name']:
+          user.last_name = user_data['last_name']
           details += 'last name, '
           
         if user.email != user_data['email']:
+          user.email = user_data['email']
           details += 'email, '
           
         if not check_password_hash(user.password, user_data['password']):
+          new_password = generate_password_hash(user_data['password'])
+          old_data = update_getter(user,new_password)
+          user.password = new_password
           details += 'password '
         
-        user.first_name = user_data['first_name']
-        user.last_name = user_data['last_name']
-        user.email = user_data['email']
-        user.password = generate_password_hash(user_data['password'])
         user.updated_date = time()
         
         audit = audit_log(user,'Update',details)

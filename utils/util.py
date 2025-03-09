@@ -5,11 +5,14 @@ from dotenv import load_dotenv
 from functools import wraps
 from datetime import datetime, timedelta,timezone
 import jwt
+import uuid
 import base64
 import os
 
 from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
 from cryptography.fernet import Fernet
+import hmac
+import hashlib
 
 from models.user import User
 
@@ -21,6 +24,7 @@ from models.user import User
 
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
+SECOND_KEY = os.getenv('SECOND_KEY')
 
 def time():
   return datetime.now()
@@ -30,11 +34,14 @@ def salt_maker():
 
 def encode_token(user_id, role_names):
   try:
+    now = datetime.now(timezone.utc)
     payload = {
-      'exp': datetime.now(timezone.utc) + timedelta(hours=1),
-      'iat': datetime.now(timezone.utc),
+      'exp': (now + timedelta(hours=1)),
+      'iat': now,
+      "jti": str(uuid.uuid4()),
       'sub': str(user_id),
       'roles': role_names
+      # 'aud': '127.0.0.1:5000' (adding this in once we are up and running)
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token
@@ -126,19 +133,30 @@ def encrypted(key,data):
 
 def decrypted(key,data):
   cipher = make_cipher(key)
-  decrypted_data = cipher.decrypt(data).decode()
-  return decrypted_data
-
+  try:
+    decrypted_data = cipher.decrypt(data).decode()
+    return decrypted_data
+  except Exception as e:
+    raise ValueError(f'Decryption failed: {e}')
+  
 def make_key(user_data):
   salt = user_data.key
-  key, _ = derive_key(user_data.password, salt)
+  data_hash = f"{SECRET_KEY}{user_data.password}{SECOND_KEY}".encode()
+  secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
+  key, _ = derive_key(secure_hash.hex(), salt)
   return key
 
-def decript(key,password_data):
-  for password in password_data:
-    password.old_encripted_password = decrypted(key,password.old_encripted_password)
-  return password_data
+def rekey(user_data,new):
+  salt = user_data.key
+  data_hash = f"{SECRET_KEY}{new}{SECOND_KEY}".encode()
+  secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
+  key, _ = derive_key(secure_hash.hex(), salt)
+  return key
 
+def decript(key,data):
+  for password in data:
+    password.old_encripted_password = decrypted(key,password.old_encripted_password)
+  return data  
 
 ##
 ### General Helpers

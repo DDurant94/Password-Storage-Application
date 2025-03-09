@@ -80,9 +80,22 @@ def delete(user_id,question_data):
                                                                    SecurityQuestion.question == question_data['question'])).unique().scalar_one_or_none()
       
       if question is None:
-        raise ValueError("Question Not Found")
+        return None
       
       session.delete(question)
       session.commit()
       
   return "successful"
+
+def finder(key,user,rekeyed):
+  with Session(db.engine) as session:
+    with session.begin():
+      questions = session.execute(db.select(SecurityQuestion).where(SecurityQuestion.user_id == user.user_id,)).scalars().all()
+      
+      if questions != []:
+        for question in questions:
+          question.encripted_answer = decrypted(key, question.encripted_answer)
+          question.encripted_answer = encrypted(rekeyed, question.encripted_answer)
+      session.commit()
+      
+  return questions

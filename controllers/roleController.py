@@ -8,6 +8,8 @@ from models.schemas.roleSchema import role_schema, roles_schema
 
 from services import roleService
 
+@token_required
+@role_required('admin')
 def save():
   try:
     role_data = role_schema.load(request.json)
@@ -18,7 +20,7 @@ def save():
     role_save = roleService.save(role_data)
     return role_schema.jsonify(role_save), 201
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
   
 @token_required
 @role_required('admin')
@@ -27,7 +29,7 @@ def find(user_id):
     roles = roleService.find(user_id)
     return roles_schema.jsonify(roles), 200
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
 
 @token_required
 @role_required('admin')
@@ -41,7 +43,7 @@ def update(user_id):
     updated_role = roleService.update(user_id,role_data)
     return role_schema.jsonify(updated_role), 201
   except ValueError as e:
-    return jsonify({'Error': str(e)}), 400
+    return jsonify({'Error': str(e)}), 422
   
 @token_required
 @role_required('admin')
@@ -49,7 +51,7 @@ def delete(user_id):
   try:
     role_data = role_schema.load(request.json)
   except ValidationError as err:
-    return jsonify(err.messages),422
+    return jsonify(err.messages),400
   
   try:
     deleted_role = roleService.delete(user_id,role_data)
