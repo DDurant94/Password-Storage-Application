@@ -2,12 +2,13 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.securityQuestionSchema import security_question_schema, security_questions_schema
 
 from services import securityQuestionService
 
+# Adding a new Security Question controller
 @token_required
 def save(user_id):
   try:
@@ -25,7 +26,8 @@ def save(user_id):
   
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
-  
+
+# Getting all Security Questions controller (for user) 
 @token_required
 def find(user_id):
   try:
@@ -38,7 +40,8 @@ def find(user_id):
     
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
-  
+
+# Updating a Security Question controller
 @token_required
 def update(user_id):
   try:
@@ -53,7 +56,8 @@ def update(user_id):
     
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
-  
+
+# Deleting a Security Question controller
 @token_required
 def delete(user_id):
   try:

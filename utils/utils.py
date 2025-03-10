@@ -153,6 +153,7 @@ def rekey(user_data,new):
   key, _ = derive_key(secure_hash.hex(), salt)
   return key
 
+# decripting passwords
 def decript(key,data):
   for password in data:
     password.old_encripted_password = decrypted(key,password.old_encripted_password)

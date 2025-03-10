@@ -4,7 +4,7 @@ from schema import ma
 class UserSchema(ma.Schema):
   user_id = fields.Integer(required = False)
   username = fields.String(required = True, validate = validate.Length(min=6,max=12))
-  password = fields.String(required = True, validate = validate.Length(min=8,max=20))
+  password = fields.String(required = True, validate = validate.Length(min=12,max=20))
   first_name = fields.String(required = True, validate = validate.Length(min=2,max=30))
   last_name = fields.String(required = True, validate = validate.Length(min=2,max=30))
   email = fields.String(required = True, validate = validate.Email())

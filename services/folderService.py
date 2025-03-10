@@ -4,11 +4,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from circuitbreaker import circuit
 
-from utils.util import find_user, time
+from utils.utils import find_user, time
 
 from models.folder import Folder
 
-# add a folder
+# Add a folder
 def save(user_id,folder_data):
   try:
     with Session(db.engine) as session:
@@ -44,7 +44,7 @@ def save(user_id,folder_data):
   except Exception as e:
     raise e
   
-# find all folders with the user I.D.
+# Get all folders
 def find_user_folders(user_id):
   user = find_user(user_id) 
   folders = db.session.query(Folder).filter(Folder.user_id == user[0].user_id).order_by(Folder.parent_folder_id).all()
@@ -54,7 +54,7 @@ def find_user_folders(user_id):
   
   return folders
 
-# update folder with user I.D. and folder name
+# Update folder with user I.D. and folder name
 def update(user_id,folder_data):
   with Session(db.engine) as session:
     with session.begin():
@@ -95,7 +95,7 @@ def update(user_id,folder_data):
       
   return folder
 
-# delete folder
+# Delete folder
 def delete(user_id,folder_data):
   with Session(db.engine) as session:
     with session.begin():

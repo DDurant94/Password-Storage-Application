@@ -6,7 +6,7 @@ from circuitbreaker import circuit
 
 from services.passwordHistService import save as history_log, delete as hist_delete
 
-from utils.util import decrypted,encrypted,find_user,make_key, time
+from utils.utils import decrypted, encrypted, find_user, time
 
 from models.folder import Folder
 from models.passwords import Password
@@ -17,9 +17,9 @@ from models.passwords import Password
 ###
 ##
 
-# adding password data to history
-def password_hist_func(password_data,time):
-  log = history_log(password_data,time)
+# Adding Password data to history
+def hist_func(data):
+  log = history_log(data)
   return log
 
 ##
@@ -28,12 +28,12 @@ def password_hist_func(password_data,time):
 ###
 ##
 
-# think about getting that users password and validating it like the rest of the get user
-# adding password
+# Adding password
 def save(user_id,password_data):
   with Session(db.engine) as session:
     with session.begin():
       user = find_user(user_id)
+      
       if password_data['folder_id'] is not None:
         folder = session.execute(db.select(Folder).where(Folder.folder_id == password_data['folder_id'],
                                               Folder.user_id == user[0].user_id)).unique().scalar_one_or_none()
@@ -41,6 +41,9 @@ def save(user_id,password_data):
         if folder is None:
           raise ValueError('Folder not found!')
         
+      stamp = time()
+      action = 'Create'
+      details = f"'{user[0].username}' created a new saved password"
       encrypted_password = encrypted(user[1],password_data['encripted_password'])
       
       new_password = Password(
@@ -50,19 +53,19 @@ def save(user_id,password_data):
         username = password_data['username'],
         email = password_data['email'],
         encripted_password = encrypted_password,
-        created_date = time(),
-        last_updated_date = time()
+        created_date = stamp,
+        last_updated_date = stamp
       )
       
       session.add(new_password)
       session.flush()
-      session.add(password_hist_func(new_password,time()))
+      session.add(hist_func([new_password,stamp,details,action]))
       session.commit()
       
     session.refresh(new_password)
   return new_password
 
-# get all passwords
+# Get all passwords 
 def find_passwords(user_id):
   user = find_user(user_id)
 
@@ -73,7 +76,7 @@ def find_passwords(user_id):
   
   return password_data
 
-# get one password
+# Get one password
 def find_password(user_id, name):
   user = find_user(user_id)
   
@@ -87,7 +90,7 @@ def find_password(user_id, name):
   
   return password_data
 
-# update password
+# Update password
 def update(user_id,password_data):
   try:
     with Session(db.engine) as session:
@@ -104,19 +107,39 @@ def update(user_id,password_data):
                                               Folder.user_id == user[0].user_id).one_or_none()
         
           if folder is None:
-            raise ValueError('Folder not found!')       
+            raise ValueError('Folder not found!')
         
-        encrypted_password = encrypted(user[1],password_data['encripted_password'])
+        stamp = time()
+        check = decrypted(user[1],password.encripted_password)
+        action = 'Update'
+        details = f"'{user[0].username}' updated: password "
         
-        password.folder_id = password_data['folder_id']
-        password.password_name = password_data['password_name']
-        password.username = password_data['username']
-        password.email = password_data['email']
-        password.encripted_password = encrypted_password
-        password.last_updated_date = time()
+        if password.folder_id != password_data['folder_id']:
+          password.folder_id = password_data['folder_id']
+          details += 'folder, '
+          
+        if password.password_name != password_data['password_name']:
+          password.password_name = password_data['password_name']
+          details += 'password_name, '
+          
+        if password.username != password_data['username']:
+          password.username = password_data['username']
+          details += 'username, '
+          
+        if password.email != password_data['email']:
+          password.email = password_data['email']
+          details += 'email, '
+      
+        if check != password_data['encripted_password']:
+          encrypted_password = encrypted(user[1],password_data['encripted_password'])
+          password.encripted_password = encrypted_password
+          details += 'ecripted_password'
+          
+        history = hist_func([password,stamp,details,action])
+        session.add(history)
+
+        password.last_updated_date = stamp
         
-        session.add(password_hist_func(password,time()))
-    
         session.commit()
         
       session.refresh(password)
@@ -124,7 +147,7 @@ def update(user_id,password_data):
   except Exception as e:
     raise e 
 
-# delete password
+# Delete password
 def delete(user_id,password_data):
   history = hist_delete(user_id,password_data)
   
@@ -147,6 +170,7 @@ def delete(user_id,password_data):
       session.commit()
   return 'successful'
 
+# Rekeying password func
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():

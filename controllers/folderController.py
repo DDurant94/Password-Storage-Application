@@ -2,12 +2,13 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.folderSchema import folder_schema,folders_schema
 
 from services import folderService
 
+# Adding Folder Controller
 @token_required
 def save(user_id):
   try:
@@ -24,6 +25,7 @@ def save(user_id):
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
 
+# Getting all Folders controller (for user)
 @token_required
 def find_user_folders(user_id):
   folders = folderService.find_user_folders(user_id)
@@ -34,6 +36,7 @@ def find_user_folders(user_id):
   else:
     return jsonify({"message": "Could not find any folders"}), 404
 
+# Updating Folder controller
 @token_required 
 def update(user_id):
   try:
@@ -50,6 +53,7 @@ def update(user_id):
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
 
+# Delete Folder controller
 @token_required
 def delete(user_id):
   folder_data = folder_schema.load(request.json)

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from circuitbreaker import circuit
 
-from utils.util import time, find_user, encrypted, decrypted, make_key
+from utils.utils import time, find_user, encrypted, decrypted, make_key
 
 from models.auditLog import AuditLog
 
@@ -32,7 +32,7 @@ def save(user_data,action,detail):
   
   return audit_log
 
-# getting a users audit log
+# Getting a users audit log
 def find(user_id):
   user = find_user(user_id)
   query = db.session.query(AuditLog).filter(AuditLog.user_id == user[0].user_id).all()
@@ -42,6 +42,7 @@ def find(user_id):
   
   return query
 
+# Rekeying audit log func
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():

@@ -2,12 +2,13 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.roleSchema import role_schema, roles_schema
 
 from services import roleService
 
+# Adding a Role controller
 @token_required
 @role_required('admin')
 def save():
@@ -22,6 +23,7 @@ def save():
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
   
+# Getting all Roles controller
 @token_required
 @role_required('admin')
 def find(user_id):
@@ -31,6 +33,7 @@ def find(user_id):
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
 
+# Updating a Role controller
 @token_required
 @role_required('admin')
 def update(user_id):
@@ -44,7 +47,8 @@ def update(user_id):
     return role_schema.jsonify(updated_role), 201
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
-  
+
+# Deleting a Role controller
 @token_required
 @role_required('admin')
 def delete(user_id):

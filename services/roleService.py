@@ -23,11 +23,12 @@ def save(role_data):
     session.refresh(new_role)
   return new_role
 
-# finding all roles 
+# Finding all roles 
 def find(user_id):
   roles = db.session.query(Role).all()
   return roles
 
+# Update a role
 def update(user_id,role_data):
   with Session(db.engine) as session:
     with session.begin():
@@ -45,6 +46,7 @@ def update(user_id,role_data):
     session.refresh(role)
   return role
 
+# Delete a role
 def delete(user_id,role_data):
   with Session(db.engine) as session:
     with session.begin():

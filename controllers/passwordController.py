@@ -2,12 +2,13 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.passwordSchema import password_schema, passwords_schema
 
 from services import passwordService
 
+# Adding Password controller
 @token_required
 def save(user_id):
   try:
@@ -21,6 +22,7 @@ def save(user_id):
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
 
+# Getting all Passwords controller (for user)
 @token_required
 def find_passwords(user_id): 
   try:
@@ -30,6 +32,7 @@ def find_passwords(user_id):
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
 
+# Getting a Password by its name controller (for user)
 @token_required
 def find_password(user_id,name):
   try:
@@ -43,6 +46,7 @@ def find_password(user_id,name):
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
 
+# Updating Password controller
 @token_required
 def update(user_id):
   try:
@@ -58,6 +62,7 @@ def update(user_id):
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
 
+# Deleteing a Password controller
 @token_required 
 def delete(user_id):
   try:

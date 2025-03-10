@@ -8,7 +8,7 @@ class PasswordSchema(ma.Schema):
   password_name = fields.String(required=False,validate=validate.Length(min=2))
   username = fields.String(required=False,allow_none=True,validate=validate.Length(min=2))
   email = fields.String(required = True, validate = validate.Email())
-  encripted_password = fields.String(required=True, validate=validate.Length(min=6))
+  encripted_password = fields.String(required=True, validate=validate.Length(min=12))
   created_date = fields.DateTime(required=False)
   last_updated_date = fields.DateTime(required=False)
   

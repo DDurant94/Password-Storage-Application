@@ -5,7 +5,7 @@ from sqlalchemy import select
 from circuitbreaker import circuit
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from utils.util import encode_token, time, salt_maker as salt, find_user, make_key, rekey
+from utils.utils import encode_token, time, salt_maker as salt, find_user, make_key, rekey
 
 from services.auditLogService import save as audit_log, finder as fal
 from services.passwordService import finder as fp
@@ -26,6 +26,7 @@ from models.userManagement import UserManagementRole as UMR
 def fallback_function(*user):
   return None
 
+# Calling rekeyed functions
 def update_getter(user,new_password):
   key = make_key(user)
   rekeyed = rekey(user, new_password) 
@@ -91,7 +92,7 @@ def save(user_data):
   except Exception as e:
     raise e
 
-# Finding user by I.D.
+# Finding user
 def find_by_id(user_id):
   user = find_user(user_id)
   return user[0]
@@ -139,7 +140,7 @@ def update(user_data,user_id):
   except Exception as e:
     raise e
 
-#log user into account
+# Log user into account
 def login_user(username, password):
   with Session(db.engine) as session:
     with session.begin():
@@ -173,7 +174,7 @@ def login_user(username, password):
     session.refresh(user)
   return login_outcome
 
-# delete user 
+# Delete user 
 def delete(user_id):
   with Session(db.engine) as session:
     with session.begin():

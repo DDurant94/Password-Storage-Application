@@ -2,12 +2,13 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.passwordHistSchema import password_histories_schema, password_history_schema
 
 from services import passwordHistService
 
+# Getting all Password History controller (for user)
 @token_required
 def all_passwords_hist(user_id):  
   try:
@@ -21,6 +22,7 @@ def all_passwords_hist(user_id):
   except ValueError as e:
     return jsonify({'Error': str(e)}), 422
 
+# Getting Password History by name controller (for user)
 @token_required 
 def password_hist_by_name(user_id,search_name):
   try:

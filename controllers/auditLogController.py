@@ -2,12 +2,13 @@ from flask import jsonify, request
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.auditLogSchema import audit_log_schema, audit_logs_schema
 
 from services import auditLogService
 
+# Audit Log Get controller
 @token_required
 def find(user_id):  
   try:

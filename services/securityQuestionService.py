@@ -4,10 +4,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from circuitbreaker import circuit
 
-from utils.util import decrypted,encrypted,find_user
+from utils.utils import decrypted, encrypted, find_user
 
 from models.securityQuestion import SecurityQuestion
 
+# Adding a new security question
 def save(user_id,question_data):
   with Session(db.engine) as session:
     with session.begin():
@@ -36,6 +37,7 @@ def save(user_id,question_data):
     session.refresh(new_question)
   return new_question
 
+# Getting all security questions
 def find(user_id):
   user = find_user(user_id)
   
@@ -49,6 +51,7 @@ def find(user_id):
   
   return security_questions       
 
+# Updating a security question
 def update(user_id,question_data):
   with Session(db.engine) as session:
     with session.begin():
@@ -70,6 +73,7 @@ def update(user_id,question_data):
     session.refresh(question)
   return question
 
+# Deleting a security question
 def delete(user_id,question_data):
   with Session(db.engine) as session:
     with session.begin():
@@ -87,6 +91,7 @@ def delete(user_id,question_data):
       
   return "successful"
 
+# Rekeying security question func
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():

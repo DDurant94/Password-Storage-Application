@@ -1119,7 +1119,9 @@ paths:
             application/json:
               - history_id: 1
                 user_id: 1
-                password_id: 1 
+                password_id: 1
+                action: Creation | Update
+                details: "'Username' updated: password folder, password name, email, ecripted_password | 'Username' created a new saved password"
                 password_name: title_of_password
                 username: username
                 email: email@example.com
@@ -1178,7 +1180,9 @@ paths:
               application/json:
                   history_id: 1
                   user_id: 1
-                  password_id: 1 
+                  password_id: 1
+                  action: Creation | Update
+                  details: "'Username' updated: password folder, password name, email, ecripted_password | 'Username' created a new saved password"
                   password_name: title_of_password
                   username: username
                   email: email@example.com
@@ -1696,6 +1700,14 @@ definitions:
         type: integer
         format: int64
         description: Password unique ID number
+  
+      action:
+        type: string
+        description: Activity that was being logged
+
+      details:
+        type: string
+        description: The actions that were being done
 
       password_name:
         type: string

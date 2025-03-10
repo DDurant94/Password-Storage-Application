@@ -2,13 +2,13 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from caching import cache
 
-from utils.util import token_required, role_required
+from utils.utils import token_required, role_required
 
 from models.schemas.userSchema import user_schema
 
 from services import userService 
 
-
+# Adding a new User controller
 def save():
   try:
     user_data = user_schema.load(request.json)
@@ -24,6 +24,7 @@ def save():
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
 
+# Getting a User by id controller
 @token_required
 def find_by_id(user_id):
   try:
@@ -32,6 +33,7 @@ def find_by_id(user_id):
   except ValueError as e:
     return jsonify({"Error": str(e)}),422
 
+# Updating a User controller
 @token_required
 def update(user_id):
   try:
@@ -47,7 +49,8 @@ def update(user_id):
     
   except ValueError as e:
      return jsonify({"Error": str(e)}),422
-   
+
+# Post logging in User controller  
 def login_user():
   user_data = request.json
   
@@ -57,7 +60,6 @@ def login_user():
     return jsonify(user[0]), 200
   
   else:
-
     resp = {
       "status": "Error",
       "message": f"Invalid {user[1]}"
@@ -65,6 +67,7 @@ def login_user():
       
     return jsonify(resp), 422
 
+# Deleting a User controller
 @token_required
 def delete(user_id):
   user = userService.delete(user_id)

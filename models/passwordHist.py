@@ -7,6 +7,8 @@ class PasswordHistory(Base):
   history_id: Mapped[int] = mapped_column(primary_key=True)
   user_id: Mapped[int] = mapped_column(db.ForeignKey('Users.user_id'))
   password_id: Mapped[int] = mapped_column(db.ForeignKey('Passwords.password_id'))
+  action: Mapped[str] = mapped_column(db.String(255), nullable=False)
+  details: Mapped[str] = mapped_column(db.String(255),nullable=True)
   password_name: Mapped[str] = mapped_column(db.String(255),nullable=True)
   username: Mapped[str] = mapped_column(db.String(255),nullable=True)
   email: Mapped[str] = mapped_column(db.String(100),nullable=False)
