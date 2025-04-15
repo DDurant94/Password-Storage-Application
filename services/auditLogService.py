@@ -18,7 +18,7 @@ from models.auditLog import AuditLog
 
 # Adding a new audit log
 def save(user_data,action,detail):
-  key = make_key(user_data)
+  key = make_key(user_data.key,user_data.password)
   
   encrypted_ip = encrypted(key,request.remote_addr)
   

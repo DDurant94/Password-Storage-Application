@@ -11,9 +11,9 @@ from models.userManagement import UserManagementRole as UMR
 def save(role_data):
   with Session(db.engine) as session:
     with session.begin():
-      role = session.execute(db.select(Role).where(Role.role_name == role_data['role_name'])).unique().scalar_one_or_none()
+      role = (db.session.execute(db.select(Role).where(Role.role_name == role_data['role_name'])).unique().scalar_one_or_none())
       
-      if role:
+      if role is not None:
         raise ValueError("Role already In Database")
       
       new_role = Role(role_name = role_data['role_name'])
@@ -25,7 +25,8 @@ def save(role_data):
 
 # Finding all roles 
 def find(user_id):
-  roles = db.session.query(Role).all()
+  query = select(Role)
+  roles = db.session.execute(query).scalars().all()
   return roles
 
 # Update a role
@@ -37,8 +38,9 @@ def update(user_id,role_data):
       if role is None:
         raise ValueError("Role Not Found!")
       
-      for user in users:
-        user.role = role_data['role_name']
+      if users != []:  
+        for user in users:
+          user.role = role_data['role_name']
       
       role.role_name = role_data['role_name']
       
@@ -51,14 +53,15 @@ def delete(user_id,role_data):
   with Session(db.engine) as session:
     with session.begin():
       role = session.execute(db.select(Role).where(Role.role_id == role_data['role_id'])).unique().scalar_one_or_none()
-      users = session.query(User).where(User.role == role.role_name).all() 
-      user_role = session.query(Role).where(Role.role_name == 'user').one_or_none()
       
       if role is None:
         raise ValueError("Role Not Found!")
       
       if role.role_name in ['admin','user']:
         raise ValueError(f"Can not delete '{role.role_name}' role!")
+      
+      users = session.query(User).where(User.role == role.role_name).all()
+      user_role = session.query(Role).where(Role.role_name == 'user').one_or_none()
       
       umr = session.execute(db.select(UMR).where(UMR.role_id == role.role_id)).scalars().all()
       

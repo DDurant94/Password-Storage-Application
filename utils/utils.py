@@ -139,16 +139,9 @@ def decrypted(key,data):
   except Exception as e:
     raise ValueError(f'Decryption failed: {e}')
   
-def make_key(user_data):
-  salt = user_data.key
-  data_hash = f"{SECRET_KEY}{user_data.password}{SECOND_KEY}".encode()
-  secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
-  key, _ = derive_key(secure_hash.hex(), salt)
-  return key
-
-def rekey(user_data,new):
-  salt = user_data.key
-  data_hash = f"{SECRET_KEY}{new}{SECOND_KEY}".encode()
+def make_key(key,password):
+  salt = key
+  data_hash = f"{SECRET_KEY}{password}{SECOND_KEY}".encode()
   secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
   key, _ = derive_key(secure_hash.hex(), salt)
   return key
@@ -169,5 +162,5 @@ def find_user(user_id):
   if user is None:
     raise ValueError('User not found!')
 
-  key = make_key(user)
+  key = make_key(user.key,user.password)
   return [user,key]

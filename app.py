@@ -34,7 +34,6 @@ swagger_blueprint = get_swaggerui_blueprint(
   }
 )
 
-
 def create_app(config_name):
   app = Flask(__name__)
   app.config.from_object(f"config.{config_name}")
@@ -64,8 +63,6 @@ def blue_print_config(app):
 def configure_rate_limit():
   pass
 
-
-
 if __name__ == "__main__":
 
   app = create_app("DevelopmentConfig")
@@ -73,7 +70,7 @@ if __name__ == "__main__":
   configure_rate_limit()
   
   with app.app_context():
+    # db.drop_all()
     db.create_all()
-    
     
   app.run(debug=True)

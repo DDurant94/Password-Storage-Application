@@ -5,7 +5,7 @@ from sqlalchemy import select
 from circuitbreaker import circuit
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from utils.utils import encode_token, time, salt_maker as salt, find_user, make_key, rekey
+from utils.utils import encode_token, time, salt_maker as salt, find_user, make_key
 
 from services.auditLogService import save as audit_log, finder as fal
 from services.passwordService import finder as fp
@@ -28,8 +28,8 @@ def fallback_function(*user):
 
 # Calling rekeyed functions
 def update_getter(user,new_password):
-  key = make_key(user)
-  rekeyed = rekey(user, new_password) 
+  key = make_key(user.key,user.password)
+  rekeyed = make_key(user.key, new_password) 
   audits = fal(key,user,rekeyed)
   passwords = fp(key,user,rekeyed)
   history = fph(key,user,rekeyed)
@@ -51,7 +51,7 @@ def save(user_data):
     with Session(db.engine) as session:
       with session.begin():
       
-        user = session.execute(db.select(User).where(User.username == user_data['username'])).unique().scalar_one_or_none()
+        user = (db.session.execute(db.select(User).where(User.username == user_data['username'])).unique().scalar_one_or_none())
         
         if user:
           raise ValueError("User Already Exists!")
@@ -77,7 +77,7 @@ def save(user_data):
         session.flush()
         
                 
-        role = db.session.execute(db.select(Role).where(Role.role_name == new_user.role)).scalar_one_or_none()
+        role = (db.session.execute(db.select(Role).where(Role.role_name == new_user.role)).scalar_one_or_none())
         
         if role is not None:
           session.add(UMR(user_management_id = new_user.user_id, role_id = role.role_id))
@@ -178,7 +178,7 @@ def login_user(username, password):
 def delete(user_id):
   with Session(db.engine) as session:
     with session.begin():
-      user = session.execute(db.select(User).where(User.user_id == int(user_id))).unique().scalar_one_or_none()
+      user = (db.session.execute(db.select(User).where(User.user_id == int(user_id))).unique().scalar_one_or_none())
       if not user:
         return None
       session.delete(user)      
