@@ -9,8 +9,8 @@ from models.schemas.roleSchema import role_schema, roles_schema
 from services import roleService
 
 # Adding a Role controller
-# @token_required
-# @role_required('admin')
+@token_required
+@role_required('admin')
 def save():
   try:
     role_data = role_schema.load(request.json)

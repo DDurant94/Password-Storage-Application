@@ -34,9 +34,11 @@ def update(user_id,role_data):
   with Session(db.engine) as session:
     with session.begin():
       role = session.execute(db.select(Role).where(Role.role_id == role_data['role_id'])).unique().scalar_one_or_none()
-      users = session.query(User).where(User.role == role.role_name).all()
+      
       if role is None:
         raise ValueError("Role Not Found!")
+      
+      users = session.query(User).where(User.role == role.role_name).all()
       
       if users != []:  
         for user in users:
