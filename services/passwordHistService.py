@@ -3,7 +3,7 @@ from database import db
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from utils.utils import find_user, decript, decrypted, encrypted
+from utils.utils import find_user, decrypt, decrypted, encrypted
 
 from models.passwordHist import PasswordHistory
 from models.user import User
@@ -34,7 +34,7 @@ def find_passwords_history(user_id):
   user = find_user(user_id)
   query = db.session.query(PasswordHistory).filter(PasswordHistory.user_id == user[0].user_id).order_by(PasswordHistory.password_id,
                                                                                                      PasswordHistory.changed_date).all()
-  all_history = decript(user[1],query)
+  all_history = decrypt(user[1],query)
   return all_history
 
 # Find all history by search name and user I.D.
@@ -43,7 +43,7 @@ def find_password_history(user_id,search_name):
   query = db.session.query(PasswordHistory).filter(PasswordHistory.user_id == user[0].user_id,
                                                    PasswordHistory.password_name == search_name).order_by(PasswordHistory.password_id,
                                                                                                           PasswordHistory.changed_date).all()
-  history = decript(user[1],query)
+  history = decrypt(user[1],query)
   return history
 
 # Deleteing password history as deleteing password

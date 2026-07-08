@@ -146,8 +146,8 @@ def make_key(key,password):
   key, _ = derive_key(secure_hash.hex(), salt)
   return key
 
-# decripting passwords
-def decript(key,data):
+# decrypting passwords
+def decrypt(key,data):
   for password in data:
     password.old_encripted_password = decrypted(key,password.old_encripted_password)
   return data  
