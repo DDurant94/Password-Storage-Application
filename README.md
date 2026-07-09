@@ -75,6 +75,10 @@ A testing configuration is available in `config.py` using an in-memory SQLite da
 ## Current State
 
 - Application CI/CD testing is currently not working
+- Need better abstraction hidding data/information
+- Shorter cleaner code
+- Speed up processing allow for concurrent processing
+- Changing password break the salt and secrets of new password
 
 ## Security Notes
 
