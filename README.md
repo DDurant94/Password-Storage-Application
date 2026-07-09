@@ -83,7 +83,3 @@ A testing configuration is available in `config.py` using an in-memory SQLite da
 ## Security Notes
 
 Because this is a password storage application, make sure secrets, database credentials, and any encryption keys are never committed to the repository.
-
-## License
-
-Add a license here if one applies.
