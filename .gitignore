@@ -3,3 +3,5 @@ myenv
 __pycache__
 ideas.txt
 to_do.txt
+
+.mypy_cache

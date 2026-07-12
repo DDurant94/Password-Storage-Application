@@ -44,6 +44,32 @@ Password Keeper is a Flask-based password management API for storing and retriev
 
 5. Make sure a MySQL database named `PasswordKeeper` exists locally.
 
+## Virtual Environment (Recommended)
+
+On Windows, virtual environment launchers store absolute paths. If the project folder moves (or differs across machines), `pip.exe` can fail with a launcher error.
+
+Use this workflow on each machine instead of copying `myenv`:
+
+1. Create a fresh virtual environment in the project root:
+
+   ```powershell
+   py -3.13 -m venv myenv
+   ```
+
+2. Activate it:
+
+   ```powershell
+   .\myenv\Scripts\Activate.ps1
+   ```
+
+3. Install dependencies:
+
+   ```powershell
+   python -m pip install -r requirements.txt
+   ```
+
+If you ever see a launcher/path error for `pip`, recreate `myenv` with the same steps above.
+
 ## Running the Application
 
 Start the app with:
