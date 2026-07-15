@@ -2,7 +2,7 @@ from database import db
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from circuitbreaker import circuit
+from circuitbreaker import circuit # type: ignore
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from utils.utils import encode_token, time, salt_maker as salt, find_user, make_key

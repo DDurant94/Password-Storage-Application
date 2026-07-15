@@ -3,7 +3,7 @@ from database import db
 from flask import request
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from circuitbreaker import circuit
+from circuitbreaker import circuit # type: ignore
 
 from utils.utils import time, find_user, encrypted, decrypted, make_key
 
@@ -43,13 +43,19 @@ def find(user_id):
   return query
 
 # Rekeying audit log func
+
+## Make this whole func more flexible it can be called a lot more
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():
+      
+      ## Take this and process it and separate the concerns this type of func is called in many places
       audits = session.execute(db.select(AuditLog).where(AuditLog.user_id == user.user_id,)).scalars().all()
+      
+      
       if audits != []:
         for log in audits:
           log.ip_address = decrypted(key, log.ip_address)
           log.ip_address = encrypted(rekeyed,log.ip_address)
       session.commit()
-  return audits  
+  return audits

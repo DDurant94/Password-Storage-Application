@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_cors import CORS # type: ignore
-from flask_swagger_ui import get_swaggerui_blueprint # type: ignore
+from flask_cors import CORS
+from flask_swagger_ui import get_swaggerui_blueprint
 from database import db
 from schema import ma
 from limiter import limiter

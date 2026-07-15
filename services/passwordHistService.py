@@ -63,9 +63,12 @@ def delete(user_id,password_data):
   return 'successful'
 
 # Rekeying password history func
+
+## Make this whole func more flexible it can be called a lot more
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():
+      ## Take this and process it and separate the concerns this type of func is called in many places
       histories = session.execute(db.select(PasswordHistory).where(PasswordHistory.user_id == user.user_id,)).scalars().all()
       if histories != []:
         for history in histories:

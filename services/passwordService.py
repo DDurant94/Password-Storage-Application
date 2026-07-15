@@ -2,7 +2,7 @@ from database import db
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from circuitbreaker import circuit
+from circuitbreaker import circuit # type: ignore
 
 from services.passwordHistService import save as history_log, delete as hist_delete
 
@@ -171,9 +171,13 @@ def delete(user_id,password_data):
   return 'successful'
 
 # Rekeying password func
+
+## Make this whole func more flexible it can be called a lot more
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():
+      
+      ## Take this and process it and separate the concerns this type of func is called in many places
       passwords = session.execute(db.select(Password).where(Password.user_id == user.user_id,)).scalars().all()
       
       if passwords != []:

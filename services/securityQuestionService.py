@@ -2,7 +2,7 @@ from database import db
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from circuitbreaker import circuit
+from circuitbreaker import circuit # type: ignore
 
 from utils.utils import decrypted, encrypted, find_user
 
@@ -92,9 +92,13 @@ def delete(user_id,question_data):
   return "successful"
 
 # Rekeying security question func
+
+## Make this whole func more flexible it can be called a lot more
 def finder(key,user,rekeyed):
   with Session(db.engine) as session:
     with session.begin():
+      
+      ## Take this and process it and separate the concerns this type of func is called in many places
       questions = session.execute(db.select(SecurityQuestion).where(SecurityQuestion.user_id == user.user_id,)).scalars().all()
       
       if questions != []:
