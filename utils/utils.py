@@ -16,6 +16,8 @@ import hashlib
 
 from models.user import User
 
+from utils.util_password_processing import make_key
+
 ##
 ###
 #### Make Tokens
@@ -109,48 +111,48 @@ def role_required(role):
 ### Encode Passwords
 ##
 
-def derive_key(password,salt=None):
-  if salt is None:
-    salt = salt_maker()
+# def derive_key(password,salt=None):
+#   if salt is None:
+#     salt = salt_maker()
   
-  kdf = Argon2id(salt=salt,
-               length=32,
-               iterations=16,
-               lanes=4,
-               memory_cost=64 * 1024,
-               ad=None,
-               secret=None)
-  key = kdf.derive(password.encode())
-  return key, salt
+#   kdf = Argon2id(salt=salt,
+#                length=32,
+#                iterations=16,
+#                lanes=4,
+#                memory_cost=64 * 1024,
+#                ad=None,
+#                secret=None)
+#   key = kdf.derive(password.encode())
+#   return key, salt
 
-def make_cipher(key):
-  return Fernet(base64.urlsafe_b64encode(key))
+# def make_cipher(key):
+#   return Fernet(base64.urlsafe_b64encode(key))
   
-def encrypted(key,data):
-  cipher = make_cipher(key)
-  encrypted_data = cipher.encrypt(data.encode())
-  return encrypted_data
+# def encrypted(key,data):
+#   cipher = make_cipher(key)
+#   encrypted_data = cipher.encrypt(data.encode())
+#   return encrypted_data
 
-def decrypted(key,data):
-  cipher = make_cipher(key)
-  try:
-    decrypted_data = cipher.decrypt(data).decode()
-    return decrypted_data
-  except Exception as e:
-    raise ValueError(f'Decryption failed: {e}')
+# def decrypted(key,data):
+#   cipher = make_cipher(key)
+#   try:
+#     decrypted_data = cipher.decrypt(data).decode()
+#     return decrypted_data
+#   except Exception as e:
+#     raise ValueError(f'Decryption failed: {e}')
   
-def make_key(key,password):
-  salt = key
-  data_hash = f"{SECRET_KEY}{password}{SECOND_KEY}".encode()
-  secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
-  key, _ = derive_key(secure_hash.hex(), salt)
-  return key
+# def make_key(key,password):
+#   salt = key
+#   data_hash = f"{SECRET_KEY}{password}{SECOND_KEY}".encode()
+#   secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
+#   key, _ = derive_key(secure_hash.hex(), salt)
+#   return key
 
-# decrypting passwords
-def decrypt(key,data):
-  for password in data:
-    password.old_encripted_password = decrypted(key,password.old_encripted_password)
-  return data  
+# # decrypting passwords
+# def decrypt(key,data):
+#   for password in data:
+#     password.old_encripted_password = decrypted(key,password.old_encripted_password)
+#   return data  
 
 ##
 ### General Helpers

@@ -13,6 +13,12 @@ from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
 from cryptography.fernet import Fernet
 import hmac
 import hashlib
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
+SECOND_KEY = os.getenv('SECOND_KEY')
 
 
 def derive_key(password,salt=None):
