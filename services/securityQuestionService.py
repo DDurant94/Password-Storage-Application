@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from circuitbreaker import circuit # type: ignore
 
-from utils.utils import decrypted, encrypted, find_user
+from utils.utils import find_user
+from utils.util_password_processing import decrypted, encrypted
 
 from models.securityQuestion import SecurityQuestion
 

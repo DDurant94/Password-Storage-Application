@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from circuitbreaker import circuit # type: ignore
 
-from utils.utils import time, find_user, encrypted, decrypted, make_key
+from utils.utils import time, find_user
+from utils.util_password_processing import decrypted, encrypted, make_key
 
 from models.auditLog import AuditLog
 

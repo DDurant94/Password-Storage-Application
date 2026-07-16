@@ -57,3 +57,9 @@ def make_key(key,password):
   secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
   key, _ = derive_key(secure_hash.hex(), salt)
   return key
+
+# decrypting passwords
+def decrypt(key,data):
+  for password in data:
+    password.old_encripted_password = decrypted(key,password.old_encripted_password)
+  return data  
