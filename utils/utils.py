@@ -16,7 +16,7 @@ import hashlib
 
 from models.user import User
 
-from utils.util_password_processing import make_key
+from utils.encryption_utils import make_key
 
 ##
 ###

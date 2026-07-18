@@ -7,7 +7,7 @@ from circuitbreaker import circuit # type: ignore
 from services.passwordHistService import save as history_log, delete as hist_delete
 
 from utils.utils import find_user, time
-from utils.util_password_processing import decrypted, encrypted
+from utils.encryption_utils import decrypted, encrypted
 
 from models.folder import Folder
 from models.passwords import Password
