@@ -4,7 +4,9 @@
 
 ## About
 
+
 Password Keeper is a Flask-based password management API for storing and retrieving passwords securely. It also includes features for generating new passwords and tracking password history.
+
 
 ## Features
 
@@ -100,11 +102,19 @@ A testing configuration is available in `config.py` using an in-memory SQLite da
 
 ## Current State
 
+<<<<<<< HEAD
 - Application CI/CD testing is currently not working
 - Need better abstraction. Giving a function only what it needs
 - Make sure the system is loosely coupled (in process)
 - Speed up processing allow for concurrent processing
 - Changing password break the salt and secrets of new password
+=======
+- Application CI/CD testing is currently not working []
+- Need better abstraction. Giving a function only what it needs []
+- Make sure the system is loosely coupled (in process) []
+- Speed up processing allow for concurrent processing []
+- Changing password break the salt and secrets of new password []
+>>>>>>> 10e9b8d8b36ae8b5c04b5d284b9c9d0cce196540
 
 ## Security Notes
 
