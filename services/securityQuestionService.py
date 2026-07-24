@@ -5,7 +5,7 @@ from sqlalchemy import select
 from circuitbreaker import circuit # type: ignore
 
 from utils.utils import find_user
-from utils.util_password_processing import decrypted, encrypted
+from utils.encryption_utils import decrypted, encrypted
 
 from models.securityQuestion import SecurityQuestion
 

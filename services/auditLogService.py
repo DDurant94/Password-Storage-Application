@@ -6,7 +6,7 @@ from sqlalchemy import select
 from circuitbreaker import circuit # type: ignore
 
 from utils.utils import time, find_user
-from utils.util_password_processing import decrypted, encrypted, make_key
+from utils.encryption_utils import decrypted, encrypted, make_key
 
 from models.auditLog import AuditLog
 
