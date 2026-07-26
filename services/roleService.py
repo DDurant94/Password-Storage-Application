@@ -2,12 +2,17 @@ from database import db
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from circuitbreaker import circuit # type: ignore
 
 from models.role import Role
 from models.user import User
 from models.userManagement import UserManagementRole as UMR
 
+def fallback_function(*user):
+  return None
+
 # Adding a new role to API
+@circuit(failure_threshold=1,recovery_timeout=10,fallback_function=fallback_function)
 def save(role_data):
   with Session(db.engine) as session:
     with session.begin():
