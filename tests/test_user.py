@@ -37,3 +37,7 @@ from app import create_app
 from models.role import Role
 from models.user import User
 from services.userService import save, update, find_user, delete
+
+def mocked_session(mock_session):
+  """Return the mock session context manager."""
+  return mock_session.return_value.__enter__.return_value
