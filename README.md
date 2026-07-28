@@ -107,7 +107,6 @@ A testing configuration is available in `config.py` using an in-memory SQLite da
 - Make sure the system is loosely coupled (in process) []
 - Speed up processing allow for concurrent processing []
 - Changing password break the salt and secrets of new password []
-- 
 
 ## Security Notes
 
