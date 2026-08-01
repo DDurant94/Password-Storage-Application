@@ -16,6 +16,11 @@ from models.user import User
 from models.role import Role
 from models.userManagement import UserManagementRole as UMR 
 
+
+def _non_business_failure(exc_type, _):
+  """Treat non-ValueError exceptions as circuit-breaker failures."""
+  return not issubclass(exc_type, ValueError)
+
 ##
 ###
 #### Helper Functions
@@ -43,7 +48,12 @@ def update_getter(user,new_password):
 ##
 
 # Adding a new user
-@circuit(failure_threshold=1,recovery_timeout=10,fallback_function=fallback_function)
+@circuit(
+  failure_threshold=1,
+  recovery_timeout=10,
+  expected_exception=_non_business_failure,
+  fallback_function=fallback_function
+)
 def save(user_data):
   try:
     if user_data['username'] == "Failure":
@@ -98,7 +108,12 @@ def find_by_id(user_id):
   return user[0]
 
 # Updating user account
-@circuit(failure_threshold=1,recovery_timeout=10,fallback_function=fallback_function)
+@circuit(
+  failure_threshold=1,
+  recovery_timeout=10,
+  expected_exception=_non_business_failure,
+  fallback_function=fallback_function
+)
 def update(user_data,user_id):
   try:
     with Session(db.engine) as session:
