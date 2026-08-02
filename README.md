@@ -103,6 +103,7 @@ A testing configuration is available in `config.py` using an in-memory SQLite da
 ## Current State
 
 - Application CI/CD testing is currently not working []
+- Core operation unit testing Folders, Passwords, Password History, Roles, Users []
 - Need better abstraction. Giving a function only what it needs []
 - Make sure the system is loosely coupled (in process) []
 - Speed up processing allow for concurrent processing []
