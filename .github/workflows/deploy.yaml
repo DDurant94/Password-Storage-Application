@@ -1,8 +1,6 @@
 name: CD - Deploy
 
 on:
-  push:
-    branches: [main, master, develop]
   workflow_dispatch:
     inputs:
       target:
@@ -64,8 +62,8 @@ jobs:
     needs: test-before-deploy
     runs-on: ubuntu-latest
     if: >-
-      github.ref == 'refs/heads/develop' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'staging')
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.target == 'staging'
     env:
       SSH_HOST: ${{ secrets['STAGING_SSH_HOST'] }}
       SSH_USER: ${{ secrets['STAGING_SSH_USER'] }}
@@ -115,9 +113,8 @@ jobs:
     needs: test-before-deploy
     runs-on: ubuntu-latest
     if: >-
-      github.ref == 'refs/heads/main' ||
-      github.ref == 'refs/heads/master' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'production')
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.target == 'production'
     env:
       SSH_HOST: ${{ secrets['PRODUCTION_SSH_HOST'] }}
       SSH_USER: ${{ secrets['PRODUCTION_SSH_USER'] }}

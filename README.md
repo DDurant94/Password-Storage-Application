@@ -109,9 +109,8 @@ This repo now includes two GitHub Actions workflows:
    - Uses `pytest -m "not contract" -q` for fast CI checks.
 - `.github/workflows/deploy.yaml`
    - Runs tests before deployment.
-   - Deploys `develop` to `staging`.
-   - Deploys `main`/`master` to `production`.
-   - Supports manual deploys through `workflow_dispatch`.
+   - Manual-only (`workflow_dispatch`) while deployment is not enabled.
+   - Supports `staging` and `production` targets when secrets are configured.
 
 ### Pre-Main Version Flow
 
@@ -121,6 +120,8 @@ Use `develop` as your "next version" branch:
 2. Open PRs into `develop` and let CI validate changes.
 3. Deploy `develop` to staging for QA.
 4. Merge `develop` into `main` when ready for production.
+
+If you are not deploying yet, you can ignore `.github/workflows/deploy.yaml`. Your CI checks in `.github/workflows/main.yaml` still run on push/PR and validate tests.
 
 ### Deployment Secrets
 
