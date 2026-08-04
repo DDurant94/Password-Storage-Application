@@ -7,49 +7,16 @@ Unit and endpoint tests for the Role service and API endpoints.
 - Shared setup/teardown via BaseFlaskTest.
 """
 
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from unittest.mock import patch, MagicMock
-from functools import wraps
-
-# --- Patch authentication decorators before any app/controller import ---
-
-def fake_token_required(f):
-  """Bypass token auth and inject a dummy user_id."""
-  @wraps(f)
-  def wrapper(*args, **kwargs):
-    import inspect
-    sig = inspect.signature(f)
-    if 'user_id' in sig.parameters and 'user_id' not in kwargs:
-      return f(user_id=1, *args, **kwargs)
-    return f(*args, **kwargs)
-  return wrapper
-
-def fake_role_required(role):
-  """Bypass role auth."""
-  def decorator(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-      return f(*args, **kwargs)
-    return wrapper
-  return decorator
-
-patch('utils.utils.token_required', fake_token_required).start()
-patch('utils.utils.role_required', fake_role_required).start()
 
 import unittest
 from flask import json
-from app import create_app
 from models.role import Role
 from models.user import User
 from services.roleService import save, update, find, delete
+from tests.helpers import BaseFlaskTest, mocked_session
 
-def mocked_session(mock_session):
-  """Return the mock session context manager."""
-  return mock_session.return_value.__enter__.return_value
+raw_save = save.__wrapped__
 
 def mock_role_data():
   """Return a mock Role object."""
@@ -78,18 +45,6 @@ def mock_add_role_data():
 
 # --- Shared Base Test Class ---
 
-class BaseFlaskTest(unittest.TestCase):
-  """Base test class to set up Flask app and context."""
-
-  def setUp(self):
-    self.app = create_app('TestingConfig')
-    self.client = self.app.test_client()
-    self.ctx = self.app.app_context()
-    self.ctx.push()
-
-  def tearDown(self):
-    self.ctx.pop()
-
 # --- Service Layer Tests ---
 
 class TestRoleService(BaseFlaskTest):
@@ -103,7 +58,7 @@ class TestRoleService(BaseFlaskTest):
     mock_session.return_value.__enter__.return_value = mock_session
     mock_execute.return_value.unique.return_value.scalar_one_or_none.return_value = None
     
-    resp = save(role_data)
+    resp = raw_save(role_data)
     
     self.assertIsNotNone(resp)
     self.assertEqual(resp.role_name, role_data['role_name'])
@@ -122,7 +77,7 @@ class TestRoleService(BaseFlaskTest):
     mock_execute.return_value.unique.return_value.scalar_one_or_none.return_value = mock_role
     
     with self.assertRaises(ValueError) as context:
-        save(role_data)
+      raw_save(role_data)
         
     self.assertIn('Role already In Database', str(context.exception))
     

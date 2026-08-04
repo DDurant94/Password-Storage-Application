@@ -100,6 +100,47 @@ The OpenAPI definition is loaded from:
 
 A testing configuration is available in `config.py` using an in-memory SQLite database. If you add or run tests, use `TestingConfig` for isolated test execution.
 
+## CI/CD Workflows
+
+This repo now includes two GitHub Actions workflows:
+
+- `.github/workflows/main.yaml`
+   - Runs tests on `pull_request` and `push` for `main`, `master`, and `develop`.
+   - Uses `pytest -m "not contract" -q` for fast CI checks.
+- `.github/workflows/deploy.yaml`
+   - Runs tests before deployment.
+   - Deploys `develop` to `staging`.
+   - Deploys `main`/`master` to `production`.
+   - Supports manual deploys through `workflow_dispatch`.
+
+### Pre-Main Version Flow
+
+Use `develop` as your "next version" branch:
+
+1. Create feature branches from `develop`.
+2. Open PRs into `develop` and let CI validate changes.
+3. Deploy `develop` to staging for QA.
+4. Merge `develop` into `main` when ready for production.
+
+### Deployment Secrets
+
+Configure these repository/environment secrets for SSH deploys:
+
+- Staging:
+   - `STAGING_SSH_HOST`
+   - `STAGING_SSH_USER`
+   - `STAGING_SSH_KEY`
+   - `STAGING_DEPLOY_PATH`
+- Production:
+   - `PRODUCTION_SSH_HOST`
+   - `PRODUCTION_SSH_USER`
+   - `PRODUCTION_SSH_KEY`
+   - `PRODUCTION_DEPLOY_PATH`
+
+### Recommended GitHub Branch Protection
+
+In GitHub settings, protect `main` and require the CI check from `.github/workflows/main.yaml` before merge. This enforces testing before code lands in production.
+
 ## Current State
 
 - Application CI/CD testing is currently not working []

@@ -1,0 +1,43 @@
+# Test Strategy
+
+This project now supports three test categories:
+
+- `unit`: service-level behavior with mocked dependencies
+- `api`: in-process Flask endpoint tests
+- `contract`: deployed-service checks (microservice-ready)
+
+## Useful Commands
+
+Run everything:
+
+```powershell
+python -m pytest
+```
+
+Run only unit tests:
+
+```powershell
+python -m pytest -m unit
+```
+
+Run only API tests:
+
+```powershell
+python -m pytest -m api
+```
+
+Run contract tests against a deployed instance:
+
+```powershell
+$env:SERVICE_BASE_URL = "https://your-service-host"
+python -m pytest -m contract
+```
+
+## Shared Setup
+
+Common setup is centralized in:
+
+- `tests/conftest.py` (pytest session setup, auth bypass patching, fixtures, markers)
+- `tests/helpers.py` (unittest-compatible `BaseFlaskTest`, `mocked_session`)
+
+This keeps test modules focused on behavior and makes migration to split services simpler.

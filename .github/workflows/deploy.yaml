@@ -1,0 +1,163 @@
+name: CD - Deploy
+
+on:
+  push:
+    branches: [main, master, develop]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Deployment target"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
+  workflow_call:
+    secrets:
+      STAGING_SSH_HOST:
+        required: false
+      STAGING_SSH_USER:
+        required: false
+      STAGING_SSH_KEY:
+        required: false
+      STAGING_DEPLOY_PATH:
+        required: false
+      PRODUCTION_SSH_HOST:
+        required: false
+      PRODUCTION_SSH_USER:
+        required: false
+      PRODUCTION_SSH_KEY:
+        required: false
+      PRODUCTION_DEPLOY_PATH:
+        required: false
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test-before-deploy:
+    name: Validate Before Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests (skip external contract tests)
+        run: pytest -m "not contract" -q
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: test-before-deploy
+    runs-on: ubuntu-latest
+    if: >-
+      github.ref == 'refs/heads/develop' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'staging')
+    env:
+      SSH_HOST: ${{ secrets['STAGING_SSH_HOST'] }}
+      SSH_USER: ${{ secrets['STAGING_SSH_USER'] }}
+      SSH_KEY: ${{ secrets['STAGING_SSH_KEY'] }}
+      DEPLOY_PATH: ${{ secrets['STAGING_DEPLOY_PATH'] }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate staging secrets
+        run: |
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$DEPLOY_PATH" ]; then
+            echo "Staging deployment secrets are missing."
+            echo "Set STAGING_SSH_HOST, STAGING_SSH_USER, STAGING_SSH_KEY, and STAGING_DEPLOY_PATH."
+            exit 1
+          fi
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Package release
+        run: git archive --format=tar.gz --output=release.tar.gz ${{ github.sha }}
+
+      - name: Upload package to staging host
+        run: scp release.tar.gz "$SSH_USER@$SSH_HOST:/tmp/password-backend-release.tar.gz"
+
+      - name: Deploy on staging host
+        run: |
+          ssh "$SSH_USER@$SSH_HOST" '
+            set -e
+            mkdir -p "${DEPLOY_PATH}"
+            tar -xzf /tmp/password-backend-release.tar.gz -C "${DEPLOY_PATH}"
+            cd "${DEPLOY_PATH}"
+            python3 -m venv .venv
+            . .venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+          '
+
+  deploy-production:
+    name: Deploy to Production
+    needs: test-before-deploy
+    runs-on: ubuntu-latest
+    if: >-
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/master' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'production')
+    env:
+      SSH_HOST: ${{ secrets['PRODUCTION_SSH_HOST'] }}
+      SSH_USER: ${{ secrets['PRODUCTION_SSH_USER'] }}
+      SSH_KEY: ${{ secrets['PRODUCTION_SSH_KEY'] }}
+      DEPLOY_PATH: ${{ secrets['PRODUCTION_DEPLOY_PATH'] }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate production secrets
+        run: |
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$DEPLOY_PATH" ]; then
+            echo "Production deployment secrets are missing."
+            echo "Set PRODUCTION_SSH_HOST, PRODUCTION_SSH_USER, PRODUCTION_SSH_KEY, and PRODUCTION_DEPLOY_PATH."
+            exit 1
+          fi
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Package release
+        run: git archive --format=tar.gz --output=release.tar.gz ${{ github.sha }}
+
+      - name: Upload package to production host
+        run: scp release.tar.gz "$SSH_USER@$SSH_HOST:/tmp/password-backend-release.tar.gz"
+
+      - name: Deploy on production host
+        run: |
+          ssh "$SSH_USER@$SSH_HOST" '
+            set -e
+            mkdir -p "${DEPLOY_PATH}"
+            tar -xzf /tmp/password-backend-release.tar.gz -C "${DEPLOY_PATH}"
+            cd "${DEPLOY_PATH}"
+            python3 -m venv .venv
+            . .venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+          '
