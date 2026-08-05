@@ -144,13 +144,6 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 
 ## Current State
 
-- Application CI/CD testing is currently not working []
-- Core operation unit testing:
-      - Folders []
-      - Passwords []
-      - Password History []
-      - Roles [X]
-      - Users [X]
 - Need better abstraction. Giving a function only what it needs []
 - Make sure the system is loosely coupled (in process) []
 - Speed up processing allow for concurrent processing []
