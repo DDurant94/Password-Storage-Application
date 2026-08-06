@@ -144,10 +144,10 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 
 ## Current State
 
-- Need better abstraction. Giving a function only what it needs []
+- Better abstraction. Giving a function only what it needs []
 - Make sure the system is loosely coupled (in process) []
 - Speed up processing allow for concurrent processing []
-- Changing password break the salt and secrets of new password []
+- Changing password break the salt and secrets of new password (better way to process passwords) []
 
 ## Security Notes
 
