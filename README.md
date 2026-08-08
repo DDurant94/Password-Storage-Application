@@ -4,9 +4,7 @@
 
 ## About
 
-
 Password Keeper is a Flask-based password management API for storing and retrieving passwords securely. It also includes features for generating new passwords and tracking password history.
-
 
 ## Features
 
@@ -105,12 +103,12 @@ A testing configuration is available in `config.py` using an in-memory SQLite da
 This repo now includes two GitHub Actions workflows:
 
 - `.github/workflows/main.yaml`
-   - Runs tests on `pull_request` and `push` for `main`, `master`, and `develop`.
-   - Uses `pytest -m "not contract" -q` for fast CI checks.
+  - Runs tests on `pull_request` and `push` for `main`, `master`, and `develop`.
+  - Uses `pytest -m "not contract" -q` for fast CI checks.
 - `.github/workflows/deploy.yaml`
-   - Runs tests before deployment.
-   - Manual-only (`workflow_dispatch`) while deployment is not enabled.
-   - Supports `staging` and `production` targets when secrets are configured.
+  - Runs tests before deployment.
+  - Manual-only (`workflow_dispatch`) while deployment is not enabled.
+  - Supports `staging` and `production` targets when secrets are configured.
 
 ### Pre-Main Version Flow
 
@@ -128,15 +126,15 @@ If you are not deploying yet, you can ignore `.github/workflows/deploy.yaml`. Yo
 Configure these repository/environment secrets for SSH deploys:
 
 - Staging:
-   - `STAGING_SSH_HOST`
-   - `STAGING_SSH_USER`
-   - `STAGING_SSH_KEY`
-   - `STAGING_DEPLOY_PATH`
+  - `STAGING_SSH_HOST`
+  - `STAGING_SSH_USER`
+  - `STAGING_SSH_KEY`
+  - `STAGING_DEPLOY_PATH`
 - Production:
-   - `PRODUCTION_SSH_HOST`
-   - `PRODUCTION_SSH_USER`
-   - `PRODUCTION_SSH_KEY`
-   - `PRODUCTION_DEPLOY_PATH`
+  - `PRODUCTION_SSH_USER`
+  - `PRODUCTION_SSH_KEY`
+  - `PRODUCTION_DEPLOY_PATH`
+  - `PRODUCTION_SSH_HOST`
 
 ### Recommended GitHub Branch Protection
 
