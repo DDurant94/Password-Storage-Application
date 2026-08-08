@@ -72,7 +72,7 @@ if __name__ == "__main__":
   configure_rate_limit()
   
   with app.app_context():
-    # db.drop_all()
+    db.drop_all()
     db.create_all()
     
   app.run(debug=True)
