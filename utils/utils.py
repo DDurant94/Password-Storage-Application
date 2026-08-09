@@ -1,9 +1,9 @@
 from database import db
 
-from flask import request,jsonify
+from flask import request, jsonify
 from dotenv import load_dotenv
 from functools import wraps
-from datetime import datetime, timedelta,timezone
+from datetime import datetime, timedelta, timezone
 import jwt
 import uuid
 import base64
@@ -17,6 +17,7 @@ import hashlib
 from models.user import User
 
 from utils.encryption_utils import make_key
+from utils.error_handlers import ApiError
 
 ##
 ###
@@ -45,114 +46,58 @@ def encode_token(user_id, role_names):
       'roles': role_names
       # 'aud': '127.0.0.1:5000' (adding this in once we are up and running)
     }
-    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-    return token
-  
+    return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
   except Exception as e:
     print(f"Error encoding token: {e}")
-    return e
+    raise ApiError("Unable to encode authentication token", status_code=500)
+
+
+def _get_bearer_token():
+  authorization_header = request.headers.get('Authorization', '')
+  if not authorization_header.startswith('Bearer '):
+    raise ApiError("Token is missing", status_code=401)
+
+  return authorization_header.split(" ", 1)[1]
+
+
+def _decode_token(token):
+  try:
+    return jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+  except jwt.ExpiredSignatureError as exc:
+    raise ApiError("Token has expired", status_code=401) from exc
+  except jwt.InvalidTokenError as exc:
+    raise ApiError("Invalid token", status_code=401) from exc
+
 
 def token_required(f):
   @wraps(f)
   def decorated(*args, **kwargs):
-    token = None
-    if 'Authorization' in request.headers:
-      try:
-        token = request.headers['Authorization'].split(" ")[1]
-        payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        user_id = payload.get('sub')  # Extract the user ID from the token
-        kwargs['user_id'] = user_id
-      except jwt.ExpiredSignatureError:
-        return jsonify({'message': 'Token has expired', 'error': 'Unauthorized'}), 401     
-      except jwt.InvalidTokenError:
-        return jsonify({'message': 'Invalid token', 'error': 'Unauthorized'}), 401
-    if not token:
-      return jsonify({'message': 'Token is missing', 'error': 'Unauthorized'}), 401
+    token = _get_bearer_token()
+    payload = _decode_token(token)
+    kwargs['user_id'] = payload.get('sub')
     return f(*args, **kwargs)
-  
+
   return decorated
+
 
 def role_required(role):
   def decorator(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-      token = request.headers.get('Authorization', '').split(" ")[1]
-      
-      if not token:
-        return jsonify({'message': 'Token is missing'}), 401
-      
-      try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-      except jwt.ExpiredSignatureError:
-        return jsonify({'message': 'Token has expired'}), 401
-      
-      except jwt.InvalidTokenError:
-        return jsonify({'message': 'Invalid token'}), 401
-      
+      token = _get_bearer_token()
+      payload = _decode_token(token)
+
       roles = payload.get('roles', [])
       if role not in roles:
-        return jsonify({'message': 'User does not have the required role'}), 403
-      
+        raise ApiError("User does not have the required role", status_code=403)
+
       return f(*args, **kwargs)
-    
+
     return decorated_function
-  
+
   return decorator
   
-
-##
-###
-#### Helpers
-###
-##
-
-
-##
-### Encode Passwords
-##
-
-# def derive_key(password,salt=None):
-#   if salt is None:
-#     salt = salt_maker()
-  
-#   kdf = Argon2id(salt=salt,
-#                length=32,
-#                iterations=16,
-#                lanes=4,
-#                memory_cost=64 * 1024,
-#                ad=None,
-#                secret=None)
-#   key = kdf.derive(password.encode())
-#   return key, salt
-
-# def make_cipher(key):
-#   return Fernet(base64.urlsafe_b64encode(key))
-  
-# def encrypted(key,data):
-#   cipher = make_cipher(key)
-#   encrypted_data = cipher.encrypt(data.encode())
-#   return encrypted_data
-
-# def decrypted(key,data):
-#   cipher = make_cipher(key)
-#   try:
-#     decrypted_data = cipher.decrypt(data).decode()
-#     return decrypted_data
-#   except Exception as e:
-#     raise ValueError(f'Decryption failed: {e}')
-  
-# def make_key(key,password):
-#   salt = key
-#   data_hash = f"{SECRET_KEY}{password}{SECOND_KEY}".encode()
-#   secure_hash = hmac.new(SECRET_KEY.encode(),data_hash,hashlib.sha256).digest()
-#   key, _ = derive_key(secure_hash.hex(), salt)
-#   return key
-
-# # decrypting passwords
-# def decrypt(key,data):
-#   for password in data:
-#     password.old_encripted_password = decrypted(key,password.old_encripted_password)
-#   return data  
 
 ##
 ### General Helpers
