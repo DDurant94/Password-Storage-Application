@@ -144,8 +144,8 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 
 - CI/CD Pipeline [X]
 - Unit Testing [X]
-- Better abstraction. Giving a function only what it needs []
-- Make sure the system is loosely coupled (in process) []
+- Better abstraction. Giving a function only what it needs (in progress) []
+- Make sure the system is loosely coupled (in progress) []
 - Speed up processing allow for concurrent processing []
 - Changing password break the salt and secrets of new password (better way to process passwords) []
 
