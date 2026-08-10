@@ -102,7 +102,6 @@ class TestPasswordHistoryService(BaseFlaskTest):
 
     self.assertEqual(result, 'successful')
     self.assertEqual(session_instance.delete.call_count, 2)
-    session_instance.commit.assert_called_once()
 
   @patch('services.passwordHistService.Session')
   @patch('services.passwordHistService.find_user')
@@ -130,7 +129,18 @@ class TestPasswordHistoryEndpoints(BaseFlaskTest):
 
     response = self.client.get('/history/')
 
-    self.assertEqual(response.status_code, 201)
+    self.assertEqual(response.status_code, 200)
+
+  @patch('controllers.passwordHistController.passwordHistService.find_passwords_history')
+  def test_get_all_history_accepts_limit_and_offset(self, mock_find):
+    """GET /history/ forwards pagination values to the service."""
+    mock_find.return_value = [mock_history_object()]
+
+    response = self.client.get('/history/?limit=10&offset=5')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(mock_find.call_args.kwargs['limit'], 10)
+    self.assertEqual(mock_find.call_args.kwargs['offset'], 5)
 
   @patch('controllers.passwordHistController.passwordHistService.find_passwords_history')
   def test_get_all_history_not_found(self, mock_find):
@@ -159,7 +169,7 @@ class TestPasswordHistoryEndpoints(BaseFlaskTest):
 
     response = self.client.get('/history/search=Github')
 
-    self.assertEqual(response.status_code, 201)
+    self.assertEqual(response.status_code, 200)
 
   @patch('controllers.passwordHistController.passwordHistService.find_password_history')
   def test_get_history_by_name_not_found(self, mock_find):

@@ -1,15 +1,14 @@
 import pytest
-from urllib import request
 
 
 @pytest.mark.contract
-def test_service_health_contract(service_base_url):
-  """Contract smoke test for an externally hosted service instance."""
-  if not service_base_url:
-    pytest.skip('Set SERVICE_BASE_URL to run contract tests against deployed service')
+def test_service_health_contract():
+  """Contract smoke test for the local service docs endpoint."""
+  from app import create_app
 
-  url = f"{service_base_url.rstrip('/')}/password-keeper-api/docs/"
-  response = request.urlopen(url, timeout=10)
+  app = create_app('TestingConfig')
+  with app.test_client() as client:
+    response = client.get('/password-keeper-api/docs/')
 
   # Basic public contract: docs endpoint exists and is reachable.
-  assert response.status == 200
+  assert response.status_code == 200

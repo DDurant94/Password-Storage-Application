@@ -35,13 +35,11 @@ Password Keeper is a Flask-based password management API for storing and retriev
    ```bash
    pip install -r requirements.txt
    ```
-
 4. Create a `.env` file in the project root and add your database password:
 
    ```env
    PASSWORD=your_mysql_password
    ```
-
 5. Make sure a MySQL database named `PasswordKeeper` exists locally.
 
 ## Virtual Environment (Recommended)
@@ -55,13 +53,11 @@ Use this workflow on each machine instead of copying `myenv`:
    ```powershell
    py -3.13 -m venv myenv
    ```
-
 2. Activate it:
 
    ```powershell
    .\myenv\Scripts\Activate.ps1
    ```
-
 3. Install dependencies:
 
    ```powershell
@@ -97,6 +93,43 @@ The OpenAPI definition is loaded from:
 ## Testing
 
 A testing configuration is available in `config.py` using an in-memory SQLite database. If you add or run tests, use `TestingConfig` for isolated test execution.
+
+## Error Response Contract
+
+The API uses a consistent error payload for failed requests so both humans and clients can understand what went wrong.
+
+### Standard response shape
+
+```json
+{
+  "status": "error",
+  "message": "Human-readable explanation",
+  "error_code": "stable_machine_readable_code",
+  "details": {
+    "code": "stable_machine_readable_code",
+    "domain": "user|role|folder|password|security_question|resource",
+    "operation": "create|lookup|delete|update",
+    "message": "More context about the failure"
+  }
+}
+```
+
+### Notes
+
+- `message` is intended for human readers.
+- `error_code` is stable for client-side handling.
+- `details` provides domain-specific context such as the affected resource type and operation.
+
+### Common error examples
+
+- `user_already_exists`
+- `invalid_password`
+- `role_not_found`
+- `user_not_found`
+- `folder_not_found`
+- `password_not_found`
+- `question_not_found`
+- `delete_forbidden`
 
 ## CI/CD Workflows
 
@@ -146,8 +179,7 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 - Unit Testing [X]
 - Better abstraction. Giving a function only what it needs (in progress) []
 - Make sure the system is loosely coupled (in progress) []
-- Speed up processing allow for concurrent processing []
-- Changing password break the salt and secrets of new password (better way to process passwords) []
+- Speed up processing allow for concurrent processing [X]
 
 ## Security Notes
 

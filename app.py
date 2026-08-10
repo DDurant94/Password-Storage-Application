@@ -37,8 +37,9 @@ def load_models() -> None:
     from models.folder import Folder
     from models.auditLog import AuditLog
     from models.securityQuestion import SecurityQuestion
+    from models.refreshToken import RefreshToken
 
-    _ = [Role, UserManagementRole, User, Password, PasswordHistory, Folder, AuditLog, SecurityQuestion]
+    _ = [Role, UserManagementRole, User, Password, PasswordHistory, Folder, AuditLog, SecurityQuestion, RefreshToken]
 
 
 def initialize_extensions(app: Flask) -> None:
@@ -83,8 +84,10 @@ def configure_rate_limit() -> None:
     return None
 
 
+app = create_app("DevelopmentConfig")
+
+
 if __name__ == "__main__":
-    app = create_app("DevelopmentConfig")
     configure_rate_limit()
 
     with app.app_context():
