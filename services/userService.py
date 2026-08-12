@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from utils.utils import encode_token, encode_refresh_token, decode_refresh_token, time, salt_maker as salt, find_user, make_key, INVALID_TOKEN_MESSAGE
 from utils.circuitbreaker import CircuitBreaker
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 from services.auditLogService import save as audit_log, finder as fal
 from services.passwordService import finder as fp

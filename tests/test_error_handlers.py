@@ -1,4 +1,4 @@
-from utils.error_handlers import ApiError, handle_api_error, invalid_request_body_response, internal_server_error_response, value_error_response
+from utils.errorHandlers import ApiError, handle_api_error, invalid_request_body_response, internal_server_error_response, value_error_response
 
 
 def test_invalid_request_body_response_uses_standard_error_shape():

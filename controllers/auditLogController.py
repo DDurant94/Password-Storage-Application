@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from utils.error_handlers import ApiError, internal_server_error_response, value_error_response
+from utils.errorHandlers import ApiError, internal_server_error_response, value_error_response
 from utils.utils import token_required
 
 from models.schemas.auditLogSchema import audit_logs_schema

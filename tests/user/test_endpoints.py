@@ -5,7 +5,7 @@ from flask import json
 
 from tests.helpers import BaseFlaskTest
 from tests.user.test_data import mock_user_input, mock_user_object
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestUserEndpoints(BaseFlaskTest):

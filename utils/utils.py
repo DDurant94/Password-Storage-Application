@@ -10,8 +10,8 @@ import os
 
 from models.user import User
 
-from utils.encryption_utils import make_key
-from utils.error_handlers import ApiError
+from utils.encryption import make_key
+from utils.errorHandlers import ApiError
 
 ##
 ###

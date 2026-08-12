@@ -5,7 +5,7 @@ from flask import json
 
 from tests.helpers import BaseFlaskTest
 from tests.security_question.test_data import mock_question_data, mock_question_object
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestSecurityQuestionEndpoints(BaseFlaskTest):

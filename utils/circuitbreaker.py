@@ -1,7 +1,7 @@
 import time
 from functools import wraps
 
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class CircuitBreaker:

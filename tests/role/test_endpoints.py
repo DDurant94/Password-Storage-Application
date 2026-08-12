@@ -5,7 +5,7 @@ from flask import json
 
 from tests.helpers import BaseFlaskTest
 from tests.role.test_data import mock_role_data, role_not_found_data
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestRoleEndpoints(BaseFlaskTest):

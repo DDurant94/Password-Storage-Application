@@ -3,7 +3,7 @@ import time
 import pytest
 
 from utils.circuitbreaker import CircuitBreaker
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 def test_circuit_breaker_opens_after_threshold_and_uses_fallback():

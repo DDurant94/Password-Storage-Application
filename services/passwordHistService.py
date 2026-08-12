@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 
 from utils.utils import find_user
-from utils.encryption_utils import decrypted, encrypted, decrypt, rekey_collection
+from utils.encryption import decrypted, encrypted, decrypt, rekey_collection
 
 from models.passwordHist import PasswordHistory
 

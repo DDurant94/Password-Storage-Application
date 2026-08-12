@@ -4,7 +4,7 @@ import unittest
 
 from tests.audit_log.test_data import mock_audit_log_object
 from tests.helpers import BaseFlaskTest
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestAuditLogEndpoints(BaseFlaskTest):

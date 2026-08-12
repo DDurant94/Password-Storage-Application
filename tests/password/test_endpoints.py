@@ -5,7 +5,7 @@ from flask import json
 
 from tests.helpers import BaseFlaskTest
 from tests.password.test_data import mock_password_data, mock_password_object
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestPasswordEndpoints(BaseFlaskTest):

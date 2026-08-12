@@ -15,7 +15,7 @@ from tests.user.test_data import (
   token_lookup_result,
   user_lookup_result,
 )
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestUserService(BaseFlaskTest):

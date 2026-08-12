@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from marshmallow import ValidationError
 
-from utils.error_handlers import ApiError, invalid_request_body_response, internal_server_error_response, value_error_response
+from utils.errorHandlers import ApiError, invalid_request_body_response, internal_server_error_response, value_error_response
 from utils.utils import token_required, role_required
 
 from models.schemas.roleSchema import role_schema, roles_schema

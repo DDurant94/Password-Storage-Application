@@ -6,7 +6,7 @@ from sqlalchemy import select
 from services.passwordHistService import save as history_log, delete as hist_delete
 
 from utils.utils import find_user, time
-from utils.encryption_utils import decrypted, encrypted, rekey_collection
+from utils.encryption import decrypted, encrypted, rekey_collection
 from utils.circuitbreaker import CircuitBreaker
 from caching import (
   DEFAULT_CACHE_TIMEOUT,

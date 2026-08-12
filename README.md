@@ -177,8 +177,8 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 
 - CI/CD Pipeline [X]
 - Unit Testing [X]
-- Better abstraction. Giving a function only what it needs (in progress) []
-- Make sure the system is loosely coupled (in progress) []
+- Better abstraction (in progress) []
+- Make the system as loosely coupled as possible (in progress) []
 - Speed up processing allow for concurrent processing [X]
 
 ## Security Notes

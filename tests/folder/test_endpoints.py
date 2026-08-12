@@ -5,7 +5,7 @@ from flask import json
 
 from tests.folder.test_data import mock_folder_data, mock_folder_object
 from tests.helpers import BaseFlaskTest
-from utils.error_handlers import ApiError
+from utils.errorHandlers import ApiError
 
 
 class TestFolderEndpoints(BaseFlaskTest):

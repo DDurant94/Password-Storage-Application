@@ -6,7 +6,7 @@ from database import db
 from schema import ma
 from limiter import limiter
 from caching import cache
-from utils.error_handlers import handle_api_error
+from utils.errorHandlers import handle_api_error
 
 SWAGGER_URL = '/password-keeper-api/docs/'
 API_URL = '/static/swagger.yaml'

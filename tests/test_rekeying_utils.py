@@ -2,8 +2,8 @@ from types import SimpleNamespace
 
 import pytest
 
-import utils.encryption_utils as encryption_utils
-from utils.encryption_utils import encrypted, decrypted, rekey_collection
+import utils.encryption as encryption
+from utils.encryption import encrypted, decrypted, rekey_collection
 
 
 def test_rekey_collection_reencrypts_selected_attribute():
@@ -64,14 +64,14 @@ def test_decrypted_returns_plaintext_when_payload_is_already_cleartext():
 
 def test_make_cipher_rejects_invalid_key_length():
     with pytest.raises(ValueError, match="32 bytes"):
-        encryption_utils.make_cipher(b"short")
+        encryption.make_cipher(b"short")
 
 
 def test_make_key_uses_development_defaults_when_secrets_are_missing(monkeypatch):
-    monkeypatch.setattr(encryption_utils, "SECRET_KEY", "")
-    monkeypatch.setattr(encryption_utils, "SECOND_KEY", "")
+    monkeypatch.setattr(encryption, "SECRET_KEY", "")
+    monkeypatch.setattr(encryption, "SECOND_KEY", "")
 
-    key = encryption_utils.make_key(b"0123456789abcdef0123456789abcdef", "password")
+    key = encryption.make_key(b"0123456789abcdef0123456789abcdef", "password")
 
     assert isinstance(key, bytes)
     assert len(key) == 32

@@ -7,7 +7,7 @@ import ast
 
 from utils.utils import time, find_user
 from utils.circuitbreaker import CircuitBreaker
-from utils.encryption_utils import decrypted, encrypted, make_key, rekey_collection
+from utils.encryption import decrypted, encrypted, make_key, rekey_collection
 
 from models.auditLog import AuditLog
 

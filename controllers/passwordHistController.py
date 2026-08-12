@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from utils.error_handlers import error_response, internal_server_error_response, value_error_response
+from utils.errorHandlers import error_response, internal_server_error_response, value_error_response
 from utils.utils import token_required
 
 from models.schemas.passwordHistSchema import password_histories_schema
