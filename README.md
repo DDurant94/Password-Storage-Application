@@ -180,6 +180,7 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 - Better abstraction (in progress) []
 - Make the system as loosely coupled as possible []
 - Speed up processing allow for concurrent processing [X]
+- YAML Documentation [X]
 
 ## Security Notes
 
