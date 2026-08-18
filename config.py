@@ -8,11 +8,13 @@ class Config:
     """Base configuration with shared settings."""
     CACHE_TYPE = 'SimpleCache'
 
+# Dev
 class DevelopmentConfig(Config):
     """Development environment configuration."""
     SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://root:{PASSWORD}@localhost/PasswordKeeper'
     DEBUG = True
 
+# Testing
 class TestingConfig(Config):
     """Testing environment configuration."""
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'  # In-memory DB for tests
