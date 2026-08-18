@@ -1,5 +1,6 @@
 from utils.errorHandlers import ApiError, handle_api_error, invalid_request_body_response, internal_server_error_response, value_error_response
 
+"""Error Testing"""
 
 def test_invalid_request_body_response_uses_standard_error_shape():
     response, status_code = invalid_request_body_response()

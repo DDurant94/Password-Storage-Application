@@ -5,6 +5,7 @@ import pytest
 import utils.encryption as encryption
 from utils.encryption import encrypted, decrypted, rekey_collection
 
+"""Re-Keying Testing"""
 
 def test_rekey_collection_reencrypts_selected_attribute():
     old_key = b"0123456789abcdef0123456789abcdef"

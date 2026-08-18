@@ -1,6 +1,8 @@
 import unittest
 
 
+"""Helper Testing"""
+
 def mocked_session(mock_session):
   """Return the active SQLAlchemy Session mock in context-manager usage."""
   return mock_session.return_value.__enter__.return_value

@@ -5,6 +5,7 @@ import pytest
 from utils.circuitbreaker import CircuitBreaker
 from utils.errorHandlers import ApiError
 
+"""Circuit Breaker Testing"""
 
 def test_circuit_breaker_opens_after_threshold_and_uses_fallback():
     def flaky():

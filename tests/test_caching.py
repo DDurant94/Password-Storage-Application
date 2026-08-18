@@ -16,6 +16,8 @@ cached_result = caching_module.cached_result
 cache = caching_module.cache
 
 
+"""Caching Tests"""
+
 class TestCachingHelper(unittest.TestCase):
 
   def setUp(self):
