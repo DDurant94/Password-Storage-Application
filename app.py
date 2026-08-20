@@ -8,6 +8,8 @@ from limiter import limiter
 from caching import cache
 from utils.errorHandlers import handle_api_error
 
+from utils.genorators import password_gen
+
 SWAGGER_URL = '/password-keeper-api/docs/'
 API_URL = '/static/swagger.yaml'
 
@@ -93,5 +95,6 @@ if __name__ == "__main__":
     with app.app_context():
         # db.drop_all()
         db.create_all()
+        print(password_gen())
 
     app.run(debug=True)
