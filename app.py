@@ -8,8 +8,6 @@ from limiter import limiter
 from caching import cache
 from utils.errorHandlers import handle_api_error
 
-from utils.genorators import password_gen
-
 SWAGGER_URL = '/password-keeper-api/docs/'
 API_URL = '/static/swagger.yaml'
 
@@ -57,6 +55,7 @@ def register_blueprints(app: Flask) -> None:
     from routes.userBP import user_blueprint
     from routes.folderBP import folder_blueprint
     from routes.passwordBP import password_blueprint
+    from routes.passwordGeneratorBP import password_generator_blueprint
     from routes.passwordHistBP import password_history_blueprint
     from routes.auditLogBP import audit_blueprint
     from routes.securityQuestionBP import security_question_blueprint
@@ -67,6 +66,7 @@ def register_blueprints(app: Flask) -> None:
     app.register_blueprint(role_blueprint, url_prefix='/roles')
     app.register_blueprint(folder_blueprint, url_prefix='/folder')
     app.register_blueprint(password_blueprint, url_prefix='/password')
+    app.register_blueprint(password_generator_blueprint, url_prefix='/generate')
     app.register_blueprint(password_history_blueprint, url_prefix='/history')
     app.register_blueprint(audit_blueprint, url_prefix='/audit')
     app.register_blueprint(security_question_blueprint, url_prefix='/security')
