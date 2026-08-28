@@ -182,7 +182,7 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 - Speed up processing allow for concurrent processing [X]
 - YAML Documentation [X]
 - Looking into rollbacks for service transactions []
-
+- Checking for hidden bugs []
 ## Security Notes
 
 Because this is a password storage application, make sure secrets, database credentials, and any encryption keys are never committed to the repository.
