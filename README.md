@@ -182,7 +182,7 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 - Speed up processing allow for concurrent processing [X]
 - YAML Documentation [X]
 - Looking into rollbacks for service transactions []
-- Run real world testing for bugs [1/2]
+- Run real world testing for bugs []
 
 ## Security Notes
 
