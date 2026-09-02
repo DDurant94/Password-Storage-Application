@@ -183,6 +183,7 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 - YAML Documentation [X]
 - Looking into rollbacks for service transactions []
 - Run real world testing for bugs and unforeseen errors []
+- Start to hook up frontend []
 
 ## Security Notes
 
