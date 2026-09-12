@@ -4,7 +4,6 @@ DEFAULT_CACHE_TIMEOUT = 30
 SHORT_CACHE_TIMEOUT = 15
 LONG_CACHE_TIMEOUT = 60
 
-
 class MemoryCache:
   def __init__(self):
     self._store = {}
@@ -38,14 +37,11 @@ class MemoryCache:
     self._store.clear()
     return True
 
-
 cache = MemoryCache()
-
 
 def build_cache_key(namespace, action, *parts):
   key_parts = [namespace, action, *[str(part) for part in parts if part is not None]]
   return ':'.join(key_parts)
-
 
 def benchmark_cache(factory, iterations=100):
   start = time.time()
@@ -53,10 +49,8 @@ def benchmark_cache(factory, iterations=100):
     factory()
   return time.time() - start
 
-
 def invalidate_cache():
   cache.clear()
-
 
 def cached_result(cache_key, factory, timeout=LONG_CACHE_TIMEOUT):
   cached_value = cache.get(cache_key)
