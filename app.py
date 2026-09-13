@@ -11,7 +11,6 @@ from utils.errorHandlers import handle_api_error
 SWAGGER_URL = '/password-keeper-api/docs/'
 API_URL = '/static/swagger.yaml'
 
-
 def create_app(config_name: str = "DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.config.from_object(f"config.{config_name}")
@@ -27,7 +26,6 @@ def create_app(config_name: str = "DevelopmentConfig") -> Flask:
     app.register_error_handler(Exception, handle_api_error)
     return app
 
-
 def load_models() -> None:
     from models.role import Role
     from models.userManagement import UserManagementRole
@@ -41,14 +39,12 @@ def load_models() -> None:
 
     _ = [Role, UserManagementRole, User, Password, PasswordHistory, Folder, AuditLog, SecurityQuestion, RefreshToken]
 
-
 def initialize_extensions(app: Flask) -> None:
     db.init_app(app)
     ma.init_app(app)
     cache.init_app(app)
     limiter.init_app(app)
     CORS(app)
-
 
 def register_blueprints(app: Flask) -> None:
     from routes.roleBP import role_blueprint
@@ -72,7 +68,6 @@ def register_blueprints(app: Flask) -> None:
     app.register_blueprint(security_question_blueprint, url_prefix='/security')
     app.register_blueprint(swagger_blueprint, url_prefix=SWAGGER_URL)
 
-
 def create_swagger_blueprint():
     return get_swaggerui_blueprint(
         SWAGGER_URL,
@@ -80,14 +75,11 @@ def create_swagger_blueprint():
         config={'app_name': 'Password Keeper'}
     )
 
-
 def configure_rate_limit() -> None:
     """Placeholder for future rate-limit configuration."""
     return None
 
-
 app = create_app("DevelopmentConfig")
-
 
 if __name__ == "__main__":
     configure_rate_limit()

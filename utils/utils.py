@@ -26,7 +26,6 @@ INVALID_TOKEN_MESSAGE = "Invalid token"
 ACCESS_TOKEN_TYPE = 'access'
 REFRESH_TOKEN_TYPE = 'refresh'
 
-
 def _require_secret_key():
   if not SECRET_KEY:
     raise ApiError("Server authentication is not configured", status_code=500)
@@ -55,7 +54,6 @@ def encode_token(user_id, role_names):
   except Exception as _:
     raise ApiError("Unable to encode authentication token", status_code=500)
 
-
 def encode_refresh_token(user_id):
   _require_secret_key()
   try:
@@ -72,14 +70,12 @@ def encode_refresh_token(user_id):
   except Exception as _:
     raise ApiError("Unable to encode refresh token", status_code=500)
 
-
 def _get_bearer_token():
   authorization_header = request.headers.get('Authorization', '')
   if not authorization_header.startswith('Bearer '):
     raise ApiError("Token is missing", status_code=401)
 
   return authorization_header.split(" ", 1)[1]
-
 
 def _decode_token(token):
   _require_secret_key()
@@ -97,13 +93,11 @@ def _decode_token(token):
   except jwt.InvalidTokenError as exc:
     raise ApiError(INVALID_TOKEN_MESSAGE, status_code=401) from exc
 
-
 def decode_refresh_token(token):
   payload = _decode_token(token)
   if payload.get('type') != REFRESH_TOKEN_TYPE:
     raise ApiError(INVALID_TOKEN_MESSAGE, status_code=401)
   return payload
-
 
 def _extract_user_id(payload):
   user_id = payload.get('sub')
@@ -111,7 +105,6 @@ def _extract_user_id(payload):
     return int(user_id)
   except (TypeError, ValueError) as exc:
     raise ApiError(INVALID_TOKEN_MESSAGE, status_code=401) from exc
-
 
 def token_required(f):
   @wraps(f)
@@ -126,7 +119,6 @@ def token_required(f):
     return f(*args, **kwargs)
 
   return decorated
-
 
 def role_required(role):
   def decorator(f):
@@ -147,7 +139,6 @@ def role_required(role):
 
   return decorator
   
-
 ##
 ### General Helpers
 ##
