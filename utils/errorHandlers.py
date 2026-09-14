@@ -12,10 +12,8 @@ class ApiError(Exception):
         self.payload = payload or {}
         self.error_code = error_code
 
-
 INVALID_REQUEST_BODY_MESSAGE = "Invalid request body"
 INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error"
-
 
 def _json_error_response(message: str, status_code: int, details: dict[str, Any] | None = None, error_code: str | None = None):
     payload: dict[str, Any] = {"status": "error", "message": message}
@@ -31,18 +29,14 @@ def _json_error_response(message: str, status_code: int, details: dict[str, Any]
     with app.app_context():
         return jsonify(payload), status_code
 
-
 def error_response(message: str, status_code: int = 400, details: dict[str, Any] | None = None, error_code: str | None = None):
     return _json_error_response(message, status_code, details, error_code)
-
 
 def invalid_request_body_response():
     return error_response(INVALID_REQUEST_BODY_MESSAGE, 400, error_code="invalid_request")
 
-
 def internal_server_error_response():
     return error_response(INTERNAL_SERVER_ERROR_MESSAGE, 500, error_code="internal_server_error")
-
 
 def _infer_error_details(message: str):
     lower_message = message.lower()
@@ -111,7 +105,6 @@ def _infer_error_details(message: str):
         }
     return None, None
 
-
 def value_error_response(error: ValueError, status_code: int = 422, error_code: str | None = None):
     message = str(error)
     inferred_code, inferred_details = _infer_error_details(message)
@@ -120,7 +113,6 @@ def value_error_response(error: ValueError, status_code: int = 422, error_code: 
     if inferred_details is not None:
         return error_response(message, status_code, details=inferred_details, error_code=error_code)
     return error_response(message, status_code, error_code=error_code)
-
 
 def handle_api_error(error: Exception):
     if isinstance(error, ApiError):
