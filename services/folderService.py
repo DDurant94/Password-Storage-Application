@@ -16,7 +16,6 @@ from caching import (
 from models.folder import Folder
 from models.passwords import Password
 
-
 class FolderService:
   """Encapsulates folder business logic with injectable dependencies."""
 
@@ -135,25 +134,20 @@ class FolderService:
     invalidate_cache()
     return "successful"
 
-
 folder_service = FolderService()
 service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
-
 
 @service_breaker
 def save(user_id, folder_data):
   return folder_service.save(user_id, folder_data)
 
-
 @service_breaker
 def find_user_folders(user_id):
   return folder_service.find_user_folders(user_id)
 
-
 @service_breaker
 def update(user_id, folder_data):
   return folder_service.update(user_id, folder_data)
-
 
 @service_breaker
 def delete(user_id, folder_data):

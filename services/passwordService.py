@@ -19,7 +19,6 @@ from caching import (
 from models.folder import Folder
 from models.passwords import Password
 
-
 class PasswordService:
   """Encapsulates password business logic with injectable collaborators."""
 
@@ -191,39 +190,31 @@ class PasswordService:
         rekey_collection(passwords, key, rekeyed, 'encripted_password', limit=limit)
     return passwords
 
-
 password_service = PasswordService()
 service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
 
-
 def hist_func(data):
   return history_log(data)
-
 
 @service_breaker
 def save(user_id, password_data):
   return password_service.save(user_id, password_data)
 
-
 @service_breaker
 def find_passwords(user_id, limit=50, offset=0):
   return password_service.find_passwords(user_id, limit=limit, offset=offset)
-
 
 @service_breaker
 def find_password(user_id, name):
   return password_service.find_password(user_id, name)
 
-
 @service_breaker
 def update(user_id, password_data):
   return password_service.update(user_id, password_data)
 
-
 @service_breaker
 def delete(user_id, password_data):
   return password_service.delete(user_id, password_data)
-
 
 @service_breaker
 def finder(key, user, rekeyed, limit=50):

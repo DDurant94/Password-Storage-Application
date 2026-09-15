@@ -2,8 +2,6 @@ import time
 from functools import wraps
 
 from utils.errorHandlers import ApiError
-
-
 class CircuitBreaker:
     def __init__(self, failure_threshold=3, recovery_timeout=30, fallback=None, expected_exception=None):
         self.failure_threshold = failure_threshold
@@ -62,7 +60,6 @@ class CircuitBreaker:
                 return result
 
         return wrapper
-
 
 def protected_call(fn, *args, **kwargs):
     breaker = getattr(fn, '__circuit_breaker__', None)

@@ -11,7 +11,6 @@ from utils.encryption import decrypted, encrypted, make_key, rekey_collection
 
 from models.auditLog import AuditLog
 
-
 class AuditLogService:
   """Encapsulates audit-log business logic with injectable collaborators."""
 
@@ -88,20 +87,16 @@ class AuditLogService:
           log.ip_address = self._token_to_storage(encrypted(rekeyed, decrypted_ip))
     return audits
 
-
 audit_log_service = AuditLogService()
 service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
-
 
 @service_breaker
 def save(user_data, action, detail):
   return audit_log_service.save(user_data, action, detail)
 
-
 @service_breaker
 def find(user_id, limit=50, offset=0):
   return audit_log_service.find(user_id, limit=limit, offset=offset)
-
 
 @service_breaker
 def finder(key, user, rekeyed, limit=50):

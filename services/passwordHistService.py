@@ -8,7 +8,6 @@ from utils.encryption import decrypted, encrypted, decrypt, rekey_collection
 
 from models.passwordHist import PasswordHistory
 
-
 class PasswordHistoryService:
   """Encapsulates password-history business logic with injectable collaborators."""
 
@@ -70,25 +69,19 @@ class PasswordHistoryService:
 
     return histories
 
-
 password_history_service = PasswordHistoryService()
-
 
 def save(data):
   return password_history_service.save(data)
 
-
 def find_passwords_history(user_id, limit=50, offset=0):
   return password_history_service.find_passwords_history(user_id, limit=limit, offset=offset)
-
 
 def find_password_history(user_id, search_name, limit=50, offset=0):
   return password_history_service.find_password_history(user_id, search_name, limit=limit, offset=offset)
 
-
 def delete(user_id, password_data):
   return password_history_service.delete(user_id, password_data)
-
 
 def finder(key, user, rekeyed, limit=50):
   return password_history_service.finder(key, user, rekeyed, limit=limit)

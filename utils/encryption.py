@@ -11,7 +11,6 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY') or 'dev-secret-key'
 SECOND_KEY = os.getenv('SECOND_KEY') or 'dev-second-key'
 
-
 def derive_key(password,salt=None):
   if salt is None:
     salt = salt_maker()

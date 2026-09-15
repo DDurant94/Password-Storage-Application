@@ -1,6 +1,5 @@
 from utils.genorators import password_gen
 
-
 class PasswordGeneratorService:
 	"""Encapsulates password generation behind an injectable collaborator."""
 
@@ -10,9 +9,7 @@ class PasswordGeneratorService:
 	def generate(self):
 		return self._generator()
 
-
 password_generator_service = PasswordGeneratorService()
-
 
 def generate():
 	return password_generator_service.generate()

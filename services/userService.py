@@ -324,10 +324,8 @@ class UserService:
         session.delete(user)
     return "successful"
 
-
 user_service = UserService()
 service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
-
 
 def update_getter(user, new_password):
   key = make_key(user.key, user.password)
@@ -338,40 +336,32 @@ def update_getter(user, new_password):
   questions = fsq(key, user, rekeyed)
   return [audits, passwords, history, questions]
 
-
 @service_breaker
 def save(user_data):
   return user_service.save(user_data)
-
 
 @service_breaker
 def update(user_data, user_id):
   return user_service.update(user_data, user_id)
 
-
 def find_by_id(user_id):
   return user_service.find_by_id(user_id)
-
 
 @service_breaker
 def login_user(username, password):
   return user_service.login_user(username, password)
 
-
 @service_breaker
 def refresh_user_token(refresh_token):
   return user_service.refresh_user_token(refresh_token)
-
 
 @service_breaker
 def revoke_refresh_token(refresh_token):
   return user_service.revoke_refresh_token(refresh_token)
 
-
 @service_breaker
 def revoke_all_refresh_tokens(user_id):
   return user_service.revoke_all_refresh_tokens(user_id)
-
 
 @service_breaker
 def delete(user_id):

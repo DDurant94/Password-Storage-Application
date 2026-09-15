@@ -16,7 +16,6 @@ from caching import (
 
 from models.securityQuestion import SecurityQuestion
 
-
 class SecurityQuestionService:
   """Encapsulates security-question business logic with injectable collaborators."""
 
@@ -120,26 +119,21 @@ class SecurityQuestionService:
 security_question_service = SecurityQuestionService()
 service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
 
-
 @service_breaker
 def save(user_id, question_data):
   return security_question_service.save(user_id, question_data)
-
 
 @service_breaker
 def find(user_id):
   return security_question_service.find(user_id)
 
-
 @service_breaker
 def update(user_id, question_data):
   return security_question_service.update(user_id, question_data)
 
-
 @service_breaker
 def delete(user_id, question_data):
   return security_question_service.delete(user_id, question_data)
-
 
 @service_breaker
 def finder(key, user, rekeyed):

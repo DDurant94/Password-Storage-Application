@@ -12,14 +12,12 @@ from caching import (
   invalidate_cache,
 )
 
-
 def _clear_role_cache():
   invalidate_cache()
 
 from models.role import Role
 from models.user import User
 from models.userManagement import UserManagementRole as UMR
-
 
 class RoleService:
   """Encapsulates role-related business logic with injectable dependencies."""
@@ -112,26 +110,20 @@ class RoleService:
     invalidate_cache()
     return 'successful'
 
-
 role_service = RoleService()
-
 
 def fallback_function(*user):
   return None
-
 
 @circuit(failure_threshold=1, recovery_timeout=10, fallback_function=fallback_function)
 def save(role_data):
   return protected_call(role_service.save, role_data)
 
-
 def find(user_id):
   return protected_call(role_service.find, user_id)
 
-
 def update(user_id, role_data):
   return protected_call(role_service.update, user_id, role_data)
-
 
 def delete(user_id, role_data):
   return protected_call(role_service.delete, user_id, role_data)
