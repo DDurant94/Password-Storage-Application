@@ -16,8 +16,7 @@ class PasswordGeneratorController:
   def _apply_authenticated_user_id(payload, token_user_id):
     payload['user_id'] = int(token_user_id)
     return payload
-    
-    
+      
   @token_required
   def get(self, user_id):
     try:
@@ -30,10 +29,8 @@ class PasswordGeneratorController:
     except Exception:
       return internal_server_error_response()
 
-
 password_generator_controller = PasswordGeneratorController()
 passwordGeneratorService = password_generator_service
-
 
 def get():
   return password_generator_controller.get()

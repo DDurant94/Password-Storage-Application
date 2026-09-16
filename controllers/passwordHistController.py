@@ -7,7 +7,6 @@ from models.schemas.passwordHistSchema import password_histories_schema
 
 from services.passwordHistService import password_history_service, find_passwords_history as password_hist_service_find_passwords_history, find_password_history as password_hist_service_find_password_history, delete as password_hist_service_delete
 
-
 class PasswordHistoryController:
   """Thin HTTP controller that delegates to an injected password-history service."""
 
@@ -52,15 +51,11 @@ class PasswordHistoryController:
     except Exception:
       return internal_server_error_response()
 
-
 password_history_controller = PasswordHistoryController()
 passwordHistService = password_history_service
-
 
 def all_passwords_hist():
   return password_history_controller.all_passwords_hist()
 
-
 def password_hist_by_name(search_name):
   return password_history_controller.password_hist_by_name(search_name=search_name)
-  

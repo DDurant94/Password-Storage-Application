@@ -12,6 +12,5 @@ class UserSchema(ma.Schema):
   updated_date = fields.DateTime(required = False)
   role = fields.String(required=False,validate=validate.Length(min=2))
   
-  
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)

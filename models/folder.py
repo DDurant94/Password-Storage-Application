@@ -4,7 +4,6 @@ from sqlalchemy import ForeignKeyConstraint
 from typing import List
 import datetime
 
-
 class Folder(Base):
   __tablename__ = "Folders"
   folder_id: Mapped[int] = mapped_column(primary_key=True)

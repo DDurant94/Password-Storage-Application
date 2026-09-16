@@ -9,7 +9,6 @@ from models.schemas.passwordSchema import password_schema, passwords_schema
 
 from services.passwordService import password_service, save as password_service_save, find_passwords as password_service_find_passwords, find_password as password_service_find_password, update as password_service_update, delete as password_service_delete, finder as password_service_finder
 
-
 class PasswordController:
   """Thin HTTP controller that delegates to an injected password service."""
 
@@ -126,26 +125,20 @@ class PasswordController:
     except Exception:
       return internal_server_error_response()
 
-
 password_controller = PasswordController()
 passwordService = password_service
-
 
 def save():
   return password_controller.save()
 
-
 def find_passwords():
   return password_controller.find_passwords()
-
 
 def find_password(name):
   return password_controller.find_password(name=name)
 
-
 def update():
   return password_controller.update()
-
 
 def delete():
   return password_controller.delete()

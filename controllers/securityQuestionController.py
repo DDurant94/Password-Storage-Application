@@ -8,7 +8,6 @@ from models.schemas.securityQuestionSchema import security_question_schema, secu
 
 from services.securityQuestionService import security_question_service, save as security_question_service_save, find as security_question_service_find, update as security_question_service_update, delete as security_question_service_delete
 
-
 class SecurityQuestionController:
   """Thin HTTP controller that delegates to an injected security-question service."""
 
@@ -115,18 +114,14 @@ class SecurityQuestionController:
 security_question_controller = SecurityQuestionController()
 securityQuestionService = security_question_service
 
-
 def save():
   return security_question_controller.save()
-
 
 def find():
   return security_question_controller.find()
 
-
 def update():
   return security_question_controller.update()
-
 
 def delete():
   return security_question_controller.delete()

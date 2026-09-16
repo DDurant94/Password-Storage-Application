@@ -12,6 +12,5 @@ class PasswordSchema(ma.Schema):
   created_date = fields.DateTime(required=False)
   last_updated_date = fields.DateTime(required=False)
   
-
 password_schema = PasswordSchema()
 passwords_schema = PasswordSchema(many=True)

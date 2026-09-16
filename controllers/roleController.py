@@ -8,7 +8,6 @@ from models.schemas.roleSchema import role_schema, roles_schema
 
 from services.roleService import role_service, save as role_service_save, find as role_service_find, update as role_service_update, delete as role_service_delete
 
-
 class RoleController:
   """Thin HTTP controller that delegates to an injected role service."""
 
@@ -91,22 +90,17 @@ class RoleController:
     except Exception:
       return internal_server_error_response()
 
-
 role_controller = RoleController()
 roleService = role_service
-
 
 def save():
   return role_controller.save()
 
-
 def find():
   return role_controller.find()
 
-
 def update():
   return role_controller.update()
-
 
 def delete():
   return role_controller.delete()

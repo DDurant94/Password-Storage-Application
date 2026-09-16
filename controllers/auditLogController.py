@@ -7,7 +7,6 @@ from models.schemas.auditLogSchema import audit_logs_schema
 
 from services.auditLogService import audit_log_service, find as audit_log_find, save as audit_log_save, finder as audit_log_finder
 
-
 class AuditLogController:
   """Thin HTTP controller that delegates to an injected audit-log service."""
 
@@ -32,10 +31,8 @@ class AuditLogController:
     except Exception:
       return internal_server_error_response()
 
-
 audit_log_controller = AuditLogController()
 auditLogService = audit_log_service
-
 
 def find():
   return audit_log_controller.find()

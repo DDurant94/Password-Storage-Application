@@ -8,7 +8,6 @@ from models.schemas.userSchema import user_schema
 
 from services.userService import user_service, save as user_service_save, find_by_id as user_service_find_by_id, update as user_service_update, login_user as user_service_login_user, refresh_user_token as user_service_refresh_user_token, revoke_refresh_token as user_service_revoke_refresh_token, revoke_all_refresh_tokens as user_service_revoke_all_refresh_tokens, delete as user_service_delete
 
-
 class UserController:
     """Thin HTTP controller that delegates to an injected service."""
 
@@ -143,38 +142,29 @@ class UserController:
 
         raise ApiError(f"Couldn't find User with ID {user_id}", status_code=404)
 
-
 user_controller = UserController()
 userService = user_service
-
 
 def save():
     return user_controller.save()
 
-
 def find_by_id():
     return user_controller.find_by_id()
-
 
 def update():
     return user_controller.update()
 
-
 def login_user():
     return user_controller.login_user()
-
 
 def refresh_user_token():
     return user_controller.refresh_user_token()
 
-
 def logout_user():
     return user_controller.logout_user()
 
-
 def logout_all_user_sessions():
     return user_controller.logout_all_user_sessions()
-
 
 def delete():
     return user_controller.delete()

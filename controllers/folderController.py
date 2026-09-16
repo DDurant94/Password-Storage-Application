@@ -8,7 +8,6 @@ from models.schemas.folderSchema import folder_schema, folders_schema
 
 from services.folderService import folder_service, save as folder_service_save, find_user_folders as folder_service_find_user_folders, update as folder_service_update, delete as folder_service_delete
 
-
 class FolderController:
   """Thin HTTP controller that delegates to an injected folder service."""
 
@@ -113,22 +112,17 @@ class FolderController:
     except Exception:
       return internal_server_error_response()
 
-
 folder_controller = FolderController()
 folderService = folder_service
-
 
 def save():
   return folder_controller.save()
 
-
 def find_user_folders():
   return folder_controller.find_user_folders()
 
-
 def update():
   return folder_controller.update()
-
 
 def delete():
   return folder_controller.delete()
