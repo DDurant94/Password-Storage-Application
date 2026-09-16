@@ -135,7 +135,21 @@ class FolderService:
     return "successful"
 
 folder_service = FolderService()
-service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
+
+# Circuit Breaker Configuration:
+# - `failure_threshold`: Consecutive failures required to open the breaker.
+# - `recovery_timeout`: Seconds before attempting recovery after breaker opens.
+# - `fallback`: Optional function (*args, **kwargs) -> fallback value when the service is down.
+#
+# To update at runtime or per-function:
+#   service_breaker.configure(failure_threshold=3, fallback=lambda *args, **kwargs: None)
+#   service_breaker.set_fallback(my_fallback_func)
+#   or use: @service_breaker.protect(fallback=my_custom_fallback)
+service_breaker = CircuitBreaker(
+  failure_threshold=1,
+  recovery_timeout=10,
+  fallback=None,
+)
 
 @service_breaker
 def save(user_id, folder_data):

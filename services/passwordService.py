@@ -191,7 +191,17 @@ class PasswordService:
     return passwords
 
 password_service = PasswordService()
-service_breaker = CircuitBreaker(failure_threshold=1, recovery_timeout=10)
+
+# Circuit Breaker Configuration:
+# - `failure_threshold`: Consecutive failures to trip circuit open.
+# - `recovery_timeout`: Seconds before attempting recovery.
+# - `fallback`: Optional callable (*args, **kwargs) -> fallback response when circuit is open.
+# Update at runtime: service_breaker.configure(failure_threshold=..., fallback=...)
+service_breaker = CircuitBreaker(
+  failure_threshold=1,
+  recovery_timeout=10,
+  fallback=None,
+)
 
 def hist_func(data):
   return history_log(data)

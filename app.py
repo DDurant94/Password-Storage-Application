@@ -62,7 +62,7 @@ def register_blueprints(app: Flask) -> None:
     app.register_blueprint(role_blueprint, url_prefix='/roles')
     app.register_blueprint(folder_blueprint, url_prefix='/folder')
     app.register_blueprint(password_blueprint, url_prefix='/password')
-    app.register_blueprint(password_generator_blueprint, url_prefix='/generate')
+    app.register_blueprint(password_generator_blueprint, url_prefix='/password-generator')
     app.register_blueprint(password_history_blueprint, url_prefix='/history')
     app.register_blueprint(audit_blueprint, url_prefix='/audit')
     app.register_blueprint(security_question_blueprint, url_prefix='/security')
