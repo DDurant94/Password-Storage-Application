@@ -5,7 +5,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from caching import benchmark_cache, cache
 
-
 if __name__ == '__main__':
   cache.clear()
 
