@@ -4,4 +4,6 @@ __pycache__
 ideas.txt
 to_do.txt
 
+.github/agents
+
 .mypy_cache
