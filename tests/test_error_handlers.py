@@ -12,7 +12,6 @@ def test_invalid_request_body_response_uses_standard_error_shape():
         "message": "Invalid request body",
     }
 
-
 def test_value_error_response_uses_standard_error_shape():
     response, status_code = value_error_response(ValueError("duplicate role"))
 
@@ -21,7 +20,6 @@ def test_value_error_response_uses_standard_error_shape():
         "status": "error",
         "message": "duplicate role",
     }
-
 
 def test_internal_server_error_response_uses_standard_error_shape():
     response, status_code = internal_server_error_response()
@@ -32,7 +30,6 @@ def test_internal_server_error_response_uses_standard_error_shape():
         "error_code": "internal_server_error",
         "message": "Internal server error",
     }
-
 
 def test_value_error_response_infers_conflict_code_for_duplicate_user_errors():
     response, status_code = value_error_response(ValueError("User Already Exists!"))
@@ -49,7 +46,6 @@ def test_value_error_response_infers_conflict_code_for_duplicate_user_errors():
         "message": "The requested user already exists.",
     }
 
-
 def test_value_error_response_infers_validation_code_for_invalid_password_errors():
     response, status_code = value_error_response(ValueError("Invalid Password!"))
 
@@ -64,7 +60,6 @@ def test_value_error_response_infers_validation_code_for_invalid_password_errors
         "operation": "create",
         "message": "The provided password does not meet the validation requirements.",
     }
-
 
 def test_value_error_response_includes_domain_specific_details_for_resource_errors():
     folder_response, folder_status = value_error_response(ValueError("Folder not found!"))
@@ -94,7 +89,6 @@ def test_value_error_response_includes_domain_specific_details_for_resource_erro
         "operation": "lookup",
         "message": "The requested role could not be found.",
     }
-
 
 def test_handle_api_error_uses_standard_error_shape_and_payload_details():
     response, status_code = handle_api_error(ApiError("Conflict detected", status_code=409, payload={"code": "duplicate"}))

@@ -13,7 +13,6 @@ from services.passwordHistService import (
 )
 from tests.helpers import BaseFlaskTest, mocked_session
 
-
 def mock_history_object():
   """Return a mock PasswordHistory object with required schema fields."""
   history = MagicMock(spec=PasswordHistory)
@@ -28,7 +27,6 @@ def mock_history_object():
   history.old_encripted_password = 'StrongPass123!'
   history.changed_date = datetime.datetime.now()
   return history
-
 
 class TestPasswordHistoryService(BaseFlaskTest):
 
@@ -119,7 +117,6 @@ class TestPasswordHistoryService(BaseFlaskTest):
 
     self.assertIn('No Password History!', str(context.exception))
 
-
 class TestPasswordHistoryEndpoints(BaseFlaskTest):
 
   @patch('controllers.passwordHistController.passwordHistService.find_passwords_history')
@@ -180,7 +177,6 @@ class TestPasswordHistoryEndpoints(BaseFlaskTest):
 
     self.assertEqual(response.status_code, 404)
     self.assertIn("No password History for 'Github'", response.get_data(as_text=True))
-
 
 if __name__ == '__main__':
   unittest.main()

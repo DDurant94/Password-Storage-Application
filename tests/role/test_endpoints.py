@@ -7,7 +7,6 @@ from tests.helpers import BaseFlaskTest
 from tests.role.test_data import mock_role_data, role_not_found_data
 from utils.errorHandlers import ApiError
 
-
 class TestRoleEndpoints(BaseFlaskTest):
 
   @patch('controllers.roleController.roleService.save')
@@ -164,7 +163,6 @@ class TestRoleEndpoints(BaseFlaskTest):
 
     self.assertEqual(response.status_code, 422)
     self.assertIn("Can not delete 'admin' role!", response.get_data(as_text=True))
-
 
 if __name__ == '__main__':
   unittest.main()

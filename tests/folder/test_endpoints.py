@@ -7,7 +7,6 @@ from tests.folder.test_data import mock_folder_data, mock_folder_object
 from tests.helpers import BaseFlaskTest
 from utils.errorHandlers import ApiError
 
-
 class TestFolderEndpoints(BaseFlaskTest):
 
   @patch('controllers.folderController.folderService.save')
@@ -105,7 +104,6 @@ class TestFolderEndpoints(BaseFlaskTest):
     )
 
     self.assertEqual(response.status_code, 404)
-
 
 if __name__ == '__main__':
   unittest.main()

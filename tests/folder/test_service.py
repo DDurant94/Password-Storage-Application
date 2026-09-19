@@ -6,7 +6,6 @@ from services.folderService import save, find_user_folders, update, delete
 from tests.folder.test_data import mock_folder_data, mock_folder_object
 from tests.helpers import BaseFlaskTest, mocked_session
 
-
 class TestFolderService(BaseFlaskTest):
 
   @patch('services.folderService.time')
@@ -220,7 +219,6 @@ class TestFolderService(BaseFlaskTest):
     self.assertEqual(result, 'successful')
     self.assertIsNone(password.folder_id)
     session_instance.delete.assert_called_once_with(folder)
-
 
 if __name__ == '__main__':
   unittest.main()

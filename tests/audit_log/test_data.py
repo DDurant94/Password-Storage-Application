@@ -3,7 +3,6 @@ from unittest.mock import MagicMock
 
 from models.auditLog import AuditLog
 
-
 def mock_audit_log_object():
   log = MagicMock(spec=AuditLog)
   log.audit_id = 1

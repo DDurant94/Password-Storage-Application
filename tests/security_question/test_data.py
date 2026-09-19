@@ -2,7 +2,6 @@ from unittest.mock import MagicMock
 
 from models.securityQuestion import SecurityQuestion
 
-
 def mock_question_data():
   return {
     'question_id': 1,
@@ -10,7 +9,6 @@ def mock_question_data():
     'question': 'Your first pet?',
     'encripted_answer': 'Milo'
   }
-
 
 def mock_question_object():
   question = MagicMock(spec=SecurityQuestion)

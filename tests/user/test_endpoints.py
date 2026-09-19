@@ -7,7 +7,6 @@ from tests.helpers import BaseFlaskTest
 from tests.user.test_data import mock_user_input, mock_user_object
 from utils.errorHandlers import ApiError
 
-
 class TestUserEndpoints(BaseFlaskTest):
 
   @patch('controllers.userController.userService.save')
@@ -251,7 +250,6 @@ class TestUserEndpoints(BaseFlaskTest):
     response = self.client.delete('/user/')
 
     self.assertEqual(response.status_code, 404)
-
 
 if __name__ == '__main__':
   unittest.main()

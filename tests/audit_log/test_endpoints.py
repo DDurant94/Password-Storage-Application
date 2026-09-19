@@ -6,7 +6,6 @@ from tests.audit_log.test_data import mock_audit_log_object
 from tests.helpers import BaseFlaskTest
 from utils.errorHandlers import ApiError
 
-
 class TestAuditLogEndpoints(BaseFlaskTest):
 
   @patch('controllers.auditLogController.auditLogService.find')
@@ -44,7 +43,6 @@ class TestAuditLogEndpoints(BaseFlaskTest):
 
     self.assertEqual(response.status_code, 503)
     self.assertIn('Service temporarily unavailable', response.get_data(as_text=True))
-
 
 if __name__ == '__main__':
   unittest.main()

@@ -2,7 +2,6 @@ from unittest.mock import patch
 
 from tests.helpers import BaseFlaskTest
 
-
 class TestPasswordGeneratorEndpoints(BaseFlaskTest):
 
   @patch('controllers.passwordGeneratorController.passwordGeneratorService.generate')

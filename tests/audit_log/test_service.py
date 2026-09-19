@@ -8,7 +8,6 @@ from services.auditLogService import save, find
 from tests.audit_log.test_data import mock_audit_log_object
 from tests.helpers import BaseFlaskTest, mocked_session
 
-
 class TestAuditLogService(BaseFlaskTest):
 
   @patch('services.auditLogService.encrypted')
@@ -73,7 +72,6 @@ class TestAuditLogService(BaseFlaskTest):
     result = finder(b'old-key', user, b'new-key')
 
     self.assertEqual(result[0].ip_address, 'new-cipher')
-
 
 if __name__ == '__main__':
   unittest.main()

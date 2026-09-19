@@ -15,7 +15,6 @@ build_cache_key = caching_module.build_cache_key
 cached_result = caching_module.cached_result
 cache = caching_module.cache
 
-
 """Caching Tests"""
 
 class TestCachingHelper(unittest.TestCase):

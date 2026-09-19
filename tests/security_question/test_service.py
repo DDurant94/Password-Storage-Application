@@ -6,7 +6,6 @@ from services.securityQuestionService import save, find, update, delete
 from tests.helpers import BaseFlaskTest, mocked_session
 from tests.security_question.test_data import mock_question_data, mock_question_object
 
-
 class TestSecurityQuestionService(BaseFlaskTest):
 
   @patch('services.securityQuestionService.encrypted')
@@ -132,7 +131,6 @@ class TestSecurityQuestionService(BaseFlaskTest):
 
     self.assertEqual(result, 'successful')
     session_instance.delete.assert_called_once()
-
 
 if __name__ == '__main__':
   unittest.main()

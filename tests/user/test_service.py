@@ -17,7 +17,6 @@ from tests.user.test_data import (
 )
 from utils.errorHandlers import ApiError
 
-
 class TestUserService(BaseFlaskTest):
 
   @patch('services.userService.audit_log')
@@ -327,7 +326,6 @@ class TestUserService(BaseFlaskTest):
     result = service.delete(999)
 
     self.assertIsNone(result)
-
 
 if __name__ == '__main__':
   unittest.main()

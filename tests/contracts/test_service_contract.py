@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.contract
 def test_service_health_contract():
   """Contract smoke test for the local service docs endpoint."""

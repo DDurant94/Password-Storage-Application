@@ -26,7 +26,6 @@ def test_circuit_breaker_opens_after_threshold_and_uses_fallback():
 
     assert wrapped() == 'fallback'
 
-
 def test_circuit_breaker_recovers_after_timeout():
     calls = {'count': 0}
 
@@ -47,7 +46,6 @@ def test_circuit_breaker_recovers_after_timeout():
     time.sleep(0.02)
     assert wrapped() == 'ok'
 
-
 def test_circuit_breaker_does_not_open_on_business_errors():
     def flaky():
         raise ValueError('bad input')
@@ -60,7 +58,6 @@ def test_circuit_breaker_does_not_open_on_business_errors():
 
     with pytest.raises(ValueError):
         wrapped()
-
 
 def test_circuit_breaker_raises_service_unavailable_when_open_without_fallback():
     def flaky():
@@ -78,7 +75,6 @@ def test_circuit_breaker_raises_service_unavailable_when_open_without_fallback()
         wrapped()
 
     assert exc.value.status_code == 503
-
 
 def test_circuit_breaker_configure_updates_threshold_and_fallback():
     def flaky():
@@ -100,7 +96,6 @@ def test_circuit_breaker_configure_updates_threshold_and_fallback():
 
     # Third failure trips the breaker and triggers fallback
     assert wrapped() == 'reconfigured fallback'
-
 
 def test_circuit_breaker_set_fallback():
     def flaky():
@@ -136,7 +131,6 @@ def test_circuit_breaker_direct_attribute_assignment():
     # Single failure trips now that threshold is 1
     assert wrapped() == 'direct attribute fallback'
 
-
 def test_circuit_breaker_protect_per_function_fallback_override():
     def flaky():
         raise RuntimeError('boom')
@@ -149,7 +143,6 @@ def test_circuit_breaker_protect_per_function_fallback_override():
 
     # Triggers failure and custom fallback
     assert decorated() == 'custom function fallback'
-
 
 def test_circuit_breaker_reset():
     def flaky():

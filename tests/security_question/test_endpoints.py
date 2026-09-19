@@ -7,7 +7,6 @@ from tests.helpers import BaseFlaskTest
 from tests.security_question.test_data import mock_question_data, mock_question_object
 from utils.errorHandlers import ApiError
 
-
 class TestSecurityQuestionEndpoints(BaseFlaskTest):
 
   @patch('controllers.securityQuestionController.securityQuestionService.save')
@@ -106,7 +105,6 @@ class TestSecurityQuestionEndpoints(BaseFlaskTest):
     )
 
     self.assertEqual(response.status_code, 404)
-
 
 if __name__ == '__main__':
   unittest.main()

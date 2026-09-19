@@ -376,4 +376,3 @@ def revoke_all_refresh_tokens(user_id):
 @service_breaker
 def delete(user_id):
   return user_service.delete(user_id)
-  

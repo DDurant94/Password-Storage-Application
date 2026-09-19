@@ -13,9 +13,7 @@ from tests.role.test_data import (
   role_not_found_data,
 )
 
-
 raw_save = save.__wrapped__
-
 
 class TestRoleService(BaseFlaskTest):
 
@@ -169,7 +167,6 @@ class TestRoleService(BaseFlaskTest):
       delete(123, {'role_id': 2, 'role_name': 'user'})
 
     self.assertEqual(str(context.exception), "Can not delete 'user' role!")
-
 
 if __name__ == '__main__':
   unittest.main()

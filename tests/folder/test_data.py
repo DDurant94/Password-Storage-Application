@@ -3,7 +3,6 @@ from unittest.mock import MagicMock
 
 from models.folder import Folder
 
-
 def mock_folder_data():
   return {
     'folder_id': 1,
@@ -11,7 +10,6 @@ def mock_folder_data():
     'parent_folder_id': None,
     'folder_name': 'Personal'
   }
-
 
 def mock_folder_object():
   folder = MagicMock(spec=Folder)

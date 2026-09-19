@@ -6,7 +6,6 @@ from services.passwordService import save, find_passwords, find_password, update
 from tests.helpers import BaseFlaskTest, mocked_session
 from tests.password.test_data import mock_password_data, mock_password_object
 
-
 class TestPasswordService(BaseFlaskTest):
 
   @patch('services.passwordService.hist_func')
@@ -113,7 +112,6 @@ class TestPasswordService(BaseFlaskTest):
 
     self.assertEqual(result, 'successful')
     session_instance.delete.assert_called_once()
-
 
 if __name__ == '__main__':
   unittest.main()

@@ -16,9 +16,7 @@ if str(ROOT) not in sys.path:
 # Explicit import so patch target resolution works reliably in Python 3.13+.
 import utils.utils  # noqa: F401
 
-
 _PATCHERS = []
-
 
 def fake_token_required(f):
   """Bypass token auth and inject a dummy user_id for protected endpoints."""
@@ -31,7 +29,6 @@ def fake_token_required(f):
 
   return wrapper
 
-
 def fake_role_required(role):
   """Bypass role auth for endpoint tests."""
   def decorator(f):
@@ -42,7 +39,6 @@ def fake_role_required(role):
     return wrapper
 
   return decorator
-
 
 def pytest_configure(config):
   """Register markers and patch auth once for the full test session."""
@@ -59,13 +55,11 @@ def pytest_configure(config):
   for patcher in _PATCHERS:
     patcher.start()
 
-
 def pytest_unconfigure(config):
   """Stop global patchers cleanly at session end."""
   for patcher in _PATCHERS:
     patcher.stop()
   _PATCHERS.clear()
-
 
 def pytest_collection_modifyitems(config, items):
   """Auto-label tests so service vs API vs contract subsets are easy to run."""
@@ -78,7 +72,6 @@ def pytest_collection_modifyitems(config, items):
     elif 'Service' in nodeid:
       item.add_marker(pytest.mark.unit)
 
-
 @pytest.fixture(scope='session')
 def app():
   """Provide the Flask app in testing mode for pytest-native tests."""
@@ -86,13 +79,11 @@ def app():
 
   return create_app('TestingConfig')
 
-
 @pytest.fixture()
 def client(app):
   """Provide a Flask test client with an active app context."""
   with app.app_context():
     yield app.test_client()
-
 
 @pytest.fixture(scope='session')
 def service_base_url():

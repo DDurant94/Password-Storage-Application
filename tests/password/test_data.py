@@ -3,7 +3,6 @@ from unittest.mock import MagicMock
 
 from models.passwords import Password
 
-
 def mock_password_data():
   return {
     'password_id': 1,
@@ -14,7 +13,6 @@ def mock_password_data():
     'email': 'john@example.com',
     'encripted_password': 'StrongPass123!'
   }
-
 
 def mock_password_object():
   pwd = MagicMock(spec=Password)
