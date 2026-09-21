@@ -174,17 +174,6 @@ Configure these repository/environment secrets for SSH deploys:
 
 In GitHub settings, protect `main` and require the CI check from `.github/workflows/main.yaml` before merge. This enforces testing before code lands in production.
 
-## Current State
-
-- CI/CD Pipeline [X]
-- Unit Testing [X]
-- Better abstraction [X]
-- Make the system loosely coupled [X]
-- Speed up processing allow for concurrent processing [X]
-- YAML Documentation [X]
-- Looking into rollbacks for service transactions [X]
-- Run real world testing for bugs and unforeseen errors [...]
-
 ## Security Notes
 
 Because this is a password storage application, make sure secrets, database credentials, and any encryption keys are never committed to the repository.
