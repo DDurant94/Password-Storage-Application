@@ -70,11 +70,9 @@ def decrypt(key,data):
     password.old_encripted_password = decrypted(key,password.old_encripted_password)
   return data
 
-
 def rekey_value(ciphertext, key, rekeyed):
   decrypted_value = decrypted(key, ciphertext)
   return encrypted(rekeyed, decrypted_value)
-
 
 def rekey_collection(records, key, rekeyed, attribute_name, limit=None):
   if not records:
