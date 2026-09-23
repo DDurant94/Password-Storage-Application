@@ -2,7 +2,6 @@ from database import db, Base
 from sqlalchemy.orm import Mapped, mapped_column
 import datetime
 
-
 class RefreshToken(Base):
   __tablename__ = "Refresh_Tokens"
   refresh_token_id: Mapped[int] = mapped_column(primary_key=True)
