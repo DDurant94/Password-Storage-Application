@@ -1,10 +1,10 @@
 swagger: "2.0"
 info:
   title: Password Keeper
-  version: 1.0.0
+  version: 1.0.1
   description: >-
     API for managing users, roles, folders, passwords, password history, audit logs,
-    and security questions. 
+    and security questions. Built by Daniel Durant as a side project for storage of passwords.
     
 
     All protected endpoints require a bearer token in the Authorization header. Use the "/user/login" endpoint to obtain a token, then include it as "Bearer <token>" for authenticated requests.
