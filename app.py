@@ -75,10 +75,8 @@ def create_swagger_blueprint():
         config={'app_name': 'Password Keeper'}
     )
 
-def configure_rate_limit() -> None:
-    
+def configure_rate_limit() -> None: 
     """Placeholder for future rate-limit configuration."""
-    
     return None
 
 app = create_app("DevelopmentConfig")
