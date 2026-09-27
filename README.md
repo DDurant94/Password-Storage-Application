@@ -6,6 +6,10 @@
 
 Password Keeper is a Flask-based password management API for storing and retrieving passwords securely. It also includes features for generating new passwords and tracking password history.
 
+## Version
+
+Current Version: 1.0.1
+
 ## Features
 
 - User management
