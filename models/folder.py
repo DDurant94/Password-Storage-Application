@@ -1,6 +1,6 @@
 from database import db, Base
 from sqlalchemy.orm import Mapped, mapped_column, backref
-from sqlalchemy import ForeignKeyConstraint
+# from sqlalchemy import ForeignKeyConstraint
 from typing import List
 import datetime
 

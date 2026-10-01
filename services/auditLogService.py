@@ -2,7 +2,7 @@ from database import db
 
 from flask import request
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+# from sqlalchemy import select
 import ast
 
 from utils.utils import time, find_user

@@ -1,7 +1,7 @@
 from database import db
 
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+# from sqlalchemy import select
 
 from utils.utils import find_user
 from utils.encryption import decrypted, encrypted, rekey_collection
