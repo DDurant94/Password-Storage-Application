@@ -5,8 +5,7 @@ from utils.utils import token_required
 
 from models.schemas.auditLogSchema import audit_logs_schema
 
-from services.auditLogService import audit_log_service, find as audit_log_find, save as audit_log_save, finder as audit_log_finder
-
+from services.auditLogService import audit_log_service
 class AuditLogController:
   """Thin HTTP controller that delegates to an injected audit-log service."""
 

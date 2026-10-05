@@ -6,7 +6,7 @@ from utils.utils import token_required, role_required
 
 from models.schemas.roleSchema import role_schema, roles_schema
 
-from services.roleService import role_service, save as role_service_save, find as role_service_find, update as role_service_update, delete as role_service_delete
+from services.roleService import role_service
 
 class RoleController:
   """Thin HTTP controller that delegates to an injected role service."""

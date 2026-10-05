@@ -7,7 +7,7 @@ from utils.utils import token_required
 
 from models.schemas.passwordSchema import password_schema, passwords_schema
 
-from services.passwordService import password_service, save as password_service_save, find_passwords as password_service_find_passwords, find_password as password_service_find_password, update as password_service_update, delete as password_service_delete, finder as password_service_finder
+from services.passwordService import password_service
 
 class PasswordController:
   """Thin HTTP controller that delegates to an injected password service."""

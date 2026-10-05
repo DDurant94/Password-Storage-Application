@@ -6,7 +6,7 @@ from utils.utils import token_required
 
 from models.schemas.securityQuestionSchema import security_question_schema, security_questions_schema
 
-from services.securityQuestionService import security_question_service, save as security_question_service_save, find as security_question_service_find, update as security_question_service_update, delete as security_question_service_delete
+from services.securityQuestionService import security_question_service
 
 class SecurityQuestionController:
   """Thin HTTP controller that delegates to an injected security-question service."""

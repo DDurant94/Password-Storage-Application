@@ -6,7 +6,7 @@ from utils.utils import token_required
 
 from models.schemas.folderSchema import folder_schema, folders_schema
 
-from services.folderService import folder_service, save as folder_service_save, find_user_folders as folder_service_find_user_folders, update as folder_service_update, delete as folder_service_delete
+from services.folderService import folder_service
 
 class FolderController:
   """Thin HTTP controller that delegates to an injected folder service."""

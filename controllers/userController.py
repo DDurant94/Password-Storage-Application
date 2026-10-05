@@ -6,7 +6,7 @@ from utils.utils import token_required
 
 from models.schemas.userSchema import user_schema
 
-from services.userService import user_service, save as user_service_save, find_by_id as user_service_find_by_id, update as user_service_update, login_user as user_service_login_user, refresh_user_token as user_service_refresh_user_token, revoke_refresh_token as user_service_revoke_refresh_token, revoke_all_refresh_tokens as user_service_revoke_all_refresh_tokens, delete as user_service_delete
+from services.userService import user_service
 
 class UserController:
     """Thin HTTP controller that delegates to an injected service."""

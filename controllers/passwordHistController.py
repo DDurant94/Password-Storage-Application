@@ -5,7 +5,7 @@ from utils.utils import token_required
 
 from models.schemas.passwordHistSchema import password_histories_schema
 
-from services.passwordHistService import password_history_service, find_passwords_history as password_hist_service_find_passwords_history, find_password_history as password_hist_service_find_password_history, delete as password_hist_service_delete
+from services.passwordHistService import password_history_service
 
 class PasswordHistoryController:
   """Thin HTTP controller that delegates to an injected password-history service."""
