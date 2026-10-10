@@ -3,7 +3,6 @@ from typing import Any
 from flask import Flask, jsonify, has_app_context
 from marshmallow import ValidationError
 
-
 class ApiError(Exception):
     def __init__(self, message: str, status_code: int = 400, payload: dict[str, Any] | None = None, error_code: str | None = None):
         super().__init__(message)
