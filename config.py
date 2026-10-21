@@ -4,6 +4,8 @@ import os
 load_dotenv()
 PASSWORD = os.getenv('PASSWORD')
 
+# Config
+
 class Config:
     """Base configuration with shared settings."""
     CACHE_TYPE = 'SimpleCache'
