@@ -1,6 +1,6 @@
 # Password Keeper
 
-**Author:**   Daniel Durant
+**Author:**  Daniel Durant
 
 ## About
 
