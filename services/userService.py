@@ -331,6 +331,7 @@ user_service = UserService()
 # - `recovery_timeout`: Seconds before attempting recovery.
 # - `fallback`: Optional callable (*args, **kwargs) -> fallback response when circuit is open.
 # Update at runtime: service_breaker.configure(failure_threshold=..., fallback=...)
+
 service_breaker = CircuitBreaker(
   failure_threshold=1,
   recovery_timeout=10,
