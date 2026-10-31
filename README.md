@@ -40,11 +40,13 @@ Current Version: 1.0.1
    ```bash
    pip install -r requirements.txt
    ```
+
 4. Create a `.env` file in the project root and add your database password:
 
    ```env
    PASSWORD=your_mysql_password
    ```
+
 5. Make sure a MySQL database named `PasswordKeeper` exists locally.
 
 ## Virtual Environment (Recommended)
@@ -58,11 +60,13 @@ Use this workflow on each machine instead of copying `myenv`:
    ```powershell
    py -3.13 -m venv myenv
    ```
+
 2. Activate it:
 
    ```powershell
    .\myenv\Scripts\Activate.ps1
    ```
+
 3. Install dependencies:
 
    ```powershell
