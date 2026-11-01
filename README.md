@@ -25,6 +25,10 @@ Current Version: 1.0.1
 - Caching
 - CORS support
 
+## Front-End Progress
+
+Front-End is currently under construction.
+
 ## Requirements
 
 - Python 3.11+ recommended
