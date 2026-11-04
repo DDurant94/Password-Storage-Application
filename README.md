@@ -17,6 +17,7 @@ Current Version: 1.0.1
 - Password storage and retrieval
 - Password history tracking
 - Password Generator
+- Password Encryption
 - Folder organization
 - Security questions
 - Audit logging
