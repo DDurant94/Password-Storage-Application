@@ -25,7 +25,7 @@ Current Version: 1.0.1
 - Rate limiting
 - Caching
 - CORS support
-- Token packets
+- Bear Authorization
 
 ## Front-End Progress
 
