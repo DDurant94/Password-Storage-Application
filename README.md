@@ -14,6 +14,7 @@ Current Version: 1.0.1
 
 - User management
 - Role-based access support
+- Bear Authorization
 - Password storage and retrieval
 - Password history tracking
 - Password Generator
@@ -25,7 +26,6 @@ Current Version: 1.0.1
 - Rate limiting
 - Caching
 - CORS support
-- Bear Authorization
 
 ## Front-End Progress
 
