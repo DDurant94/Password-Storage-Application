@@ -14,7 +14,7 @@ Current Version: 1.0.1
 
 - User management
 - Role-based access support
-- Bear Authorization
+- Bear Authorization Token
 - Password storage and retrieval
 - Password history tracking
 - Password Generator
