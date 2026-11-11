@@ -192,3 +192,7 @@ In GitHub settings, protect `main` and require the CI check from `.github/workfl
 ## Security Notes
 
 Because this is a password storage application, make sure secrets, database credentials, and any encryption keys are never committed to the repository.
+
+## Upcoming features
+
+- SQL injection testing
