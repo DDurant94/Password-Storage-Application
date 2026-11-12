@@ -195,4 +195,4 @@ Because this is a password storage application, make sure secrets, database cred
 
 ## Upcoming features
 
-- SQL injection testing
+- SQL injection testing (pre-deployment)
