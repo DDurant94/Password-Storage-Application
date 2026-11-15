@@ -27,6 +27,7 @@ Current Version: 1.0.1.1
 - Caching
 - CORS support
 - Tree-based file structure
+-
 
 ## Front-End Progress
 
