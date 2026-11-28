@@ -1,4 +1,4 @@
-# Password Keeper
+# Password Keeper App
 
 **Author:** Daniel Durant
 
